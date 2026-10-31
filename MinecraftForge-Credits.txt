@@ -1,3 +1,6 @@
+Spoon is a fork of Minecraft Forge for Minecraft 1.7.10, maintained by ukagaka-irono.
+All credit for Minecraft Forge goes to the people listed below.
+
 * Eloraam *
 
 * FlowerChild *

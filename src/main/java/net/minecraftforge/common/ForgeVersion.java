@@ -24,8 +24,12 @@ public class ForgeVersion
     public static final int minorVersion    = 13;
     //This number is incremented every time a interface changes or new major feature is added, and reset every Minecraft version
     public static final int revisionVersion = 4;
-    //This number is incremented every time Jenkins builds Forge, and never reset. Should always be 0 in the repo code.
-    public static final int buildVersion    = 0;
+    //Spoon pins this to the last Forge build for 1.7.10 so mods requiring Forge@[10.13.4.1614,) still load.
+    public static final int buildVersion    = 1614;
+    //Version of Spoon itself, shown in the branding next to the Forge version it is compatible with.
+    public static final String spoonVersion = "1.0.0";
+    //Spoon has no update server yet; the version check is skipped while this is empty.
+    private static final String updateJsonURL = "";
 
     private static Status status = PENDING;
     private static String target = null;
@@ -78,7 +82,11 @@ public class ForgeVersion
 
     public static void startVersionCheck()
     {
-        new Thread("Forge Version Check")
+        if (updateJsonURL.isEmpty())
+        {
+            return;
+        }
+        new Thread("Spoon Version Check")
         {
             @SuppressWarnings("unchecked")
             @Override
@@ -86,7 +94,7 @@ public class ForgeVersion
             {
                 try
                 {
-                    URL url = new URL("http://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json");
+                    URL url = new URL(updateJsonURL);
                     InputStream con = url.openStream();
                     String data = new String(ByteStreams.toByteArray(con));
                     con.close();

@@ -1,0 +1,10 @@
+forge.update.newversion=Spoon の新しいバージョンがあります: %s
+forge.update.beta.1=%s警告: %sSpoon ベータ版
+forge.update.beta.2=重大な問題が起きる可能性があります。報告の前に確認してください。
+forge.configgui.forgeConfigTitle=Spoon の設定
+forge.configgui.ctgy.forgeGeneralConfig.tooltip=forge.cfg の設定を編集します。
+forge.configgui.ctgy.forgeGeneralConfig=一般設定
+forge.configgui.disableVersionCheck.tooltip=true にすると Spoon のバージョンチェックを無効にします。現在 Spoon には更新サーバーがないため、チェックは何もしません。
+forge.configgui.disableVersionCheck=Spoon のバージョンチェックを無効化
+forge.configgui.imeControl.tooltip=Windows のみ。文字入力欄にフォーカスがないときは IME をゲーム画面から切り離し、日本語などの IME がオンのままでも WASD などの操作キーが効くようにします。
+forge.configgui.imeControl=IME 制御

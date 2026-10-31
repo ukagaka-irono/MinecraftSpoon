@@ -4,7 +4,19 @@ buildscript {
         mavenLocal()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "gtnh"
+            url = "https://nexus.gtnewhorizons.com/repository/public/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
+        maven {
+            name = "mojang"
+            url = "https://libraries.minecraft.net/"
         }
         maven {
             name = "sonatype"
@@ -12,7 +24,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        // ForgeGradle 1.2 maintained by GTNewHorizons; the original 1.2-SNAPSHOT is no longer downloadable
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.13'
+    }
+    configurations.classpath {
+        // Srg2Source asks for a JDT build that is no longer published anywhere
+        resolutionStrategy.force 'org.eclipse.jdt:org.eclipse.jdt.core:3.10.0'
     }
 }
 
@@ -24,6 +41,74 @@ import static net.minecraftforge.gradle.dev.ForgeDevPlugin.*
 
 apply plugin: 'maven'
 apply plugin: 'forgedev'
+
+// The GTNH ForgeGradle fork writes a Java toolchain block (Gradle 6.7+) into the generated
+// eclipse/Clean and eclipse/Forge projects, but its forgedev tasks only run on Gradle 4.x.
+tasks.matching { it.name in ['generateProjectClean', 'generateProjectForge'] }.all {
+    doLast {
+        ['eclipse/Clean/build.gradle', 'eclipse/Forge/build.gradle'].each { path ->
+            def f = file(path)
+            if (f.exists()) {
+                f.text = f.text.replaceAll(/(?s)java \{\s*toolchain \{.*?\}\s*\}\s*/, '')
+            }
+        }
+    }
+}
+
+// ForgeGradle finds the classpath for these tasks by running the child project's jar task while
+// Gradle is still building the task graph, which Gradle 4.10 rejects. Use the subprojects
+// registered in settings.gradle instead.
+['Forge', 'Clean'].each { name ->
+    tasks.matching { it.name == "extractRange${name}" }.all { task ->
+        task.dependsOn { project(":${name}").tasks.findByName('jar') ?: [] }
+        task.libs = files({ project(":${name}").configurations.findByName('compile') ?: [] },
+                          { project(":${name}").tasks.findByName('jar')?.archivePath ?: [] })
+        task.doFirst {
+            def extractExcInfo = net.minecraftforge.gradle.tasks.ExtractS2SRangeTask.getDeclaredMethod('extractExcInfo', File, File)
+            extractExcInfo.accessible = true
+            extractExcInfo.invoke(task, project(":${name}").tasks.jar.archivePath, task.excOutput)
+        }
+    }
+}
+
+// The changelog used to come from Forge's Jenkins server, which no longer exists.
+// Ship the git history of this repository since the last Forge commit instead.
+tasks.matching { it.name == 'createChangelog' }.all { task ->
+    task.actions.clear()
+    task.doLast {
+        def log = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'log', '--no-merges', '--format=- %s (%h)', '9274e4fe4..HEAD'
+            standardOutput = log
+            ignoreExitValue = true
+        }
+        task.output.parentFile.mkdirs()
+        task.output.text = "Spoon ${spoonVersion()} for Minecraft 1.7.10, based on Forge ${project.version}\n\n" + log.toString('UTF-8')
+    }
+}
+
+def spoonVersion() {
+    def m = file('src/main/java/net/minecraftforge/common/ForgeVersion.java').text =~ /spoonVersion\s*=\s*"([^"]+)"/
+    return m ? m[0][1] : 'unknown'
+}
+
+// The installer base moved from files.minecraftforge.net to maven.minecraftforge.net.
+tasks.matching { it.name == 'downloadBaseInstaller' }.all {
+    url = { "https://maven.minecraftforge.net/net/minecraftforge/installer/${minecraft.installerVersion}/installer-${minecraft.installerVersion}-shrunk.jar" }
+}
+
+// Launch the patched client from the workspace that setupForge generated.
+task runClient(type: JavaExec) {
+    group = 'Spoon'
+    description = 'Runs the Spoon client from eclipse/Forge after setupForge.'
+    dependsOn { project(':Forge').tasks.findByName('classes') ?: [] }
+    main = 'GradleStart'
+    classpath = files({ project(':Forge').sourceSets.main.runtimeClasspath })
+    workingDir = file('eclipse/run')
+    if (project.hasProperty('mcUsername')) {
+        args '--username', project.mcUsername
+    }
+}
 
 repositories {
     mavenLocal()
@@ -42,17 +127,19 @@ minecraft {
     installerVersion = "1.4"
 }
 
-group = 'net.minecraftforge'
-version = getVersionFromJava(getProject(), 'src/main/java/net/minecraftforge/common/ForgeVersion.java')
+group = 'io.github.ukagaka-irono'
+archivesBaseName = 'spoon'
+// ForgeGradle takes the build number from Forge's Jenkins and appends the git branch, so build
+// the version from ForgeVersion.java instead: <mc>-<forge>-spoon<spoon version>
+version = spoonArtifactVersion()
 
-jenkins {
-    job = 'minecraftforge'
+def spoonArtifactVersion() {
+    def text = file('src/main/java/net/minecraftforge/common/ForgeVersion.java').text
+    def forge = ['majorVersion', 'minorVersion', 'revisionVersion', 'buildVersion'].collect { name ->
+        (text =~ /int\s+${name}\s*=\s*(\d+)/)[0][1]
+    }.join('.')
+    return "${minecraft.version}-${forge}-spoon${spoonVersion()}"
 }
-
-// crowdin stuff
-if (project.hasProperty("crowdinKey"))
-    tasks.getLocalizations.apiKey = project.crowdinKey
-
 
 launch4j {
     jreMinVersion = '1.6.0'
@@ -65,15 +152,8 @@ uploadArchives {
     repositories.mavenDeployer {
         configuration = configurations.deployJars
 
-        if (project.hasProperty("filesmaven")) {
-            logger.info('Publishing to files server')
-            repository(url: project.filesmaven.url) {
-                authentication(userName: project.filesmaven.username, privateKey: project.filesmaven.key)
-            }
-        } else {
-            logger.info('Publishing to repo folder')
-            repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
-        }
+        logger.info('Publishing to repo folder')
+        repository(url: 'file://localhost/' + project.file('repo').getAbsolutePath())
 
         pom {
             groupId = project.group
@@ -83,29 +163,34 @@ uploadArchives {
         pom.project {
             name project.archivesBaseName
             packaging 'jar'
-            description 'Minecraft Forge API'
-            url 'https://github.com/MinecraftForge/MinecraftForge'
+            description 'Spoon: a fork of Minecraft Forge for Minecraft 1.7.10'
+            url 'https://github.com/ukagaka-irono/MinecraftSpoon'
 
             scm {
-                url 'https://github.com/MinecraftForge/MinecraftForge'
-                connection 'scm:git:git://github.com/MinecraftForge/MinecraftForge.git'
-                developerConnection 'scm:git:git@github.com:MinecraftForge/MinecraftForge.git'
+                url 'https://github.com/ukagaka-irono/MinecraftSpoon'
+                connection 'scm:git:git://github.com/ukagaka-irono/MinecraftSpoon.git'
+                developerConnection 'scm:git:git@github.com:ukagaka-irono/MinecraftSpoon.git'
             }
 
             issueManagement {
                 system 'github'
-                url 'https://github.com/MinecraftForge/MinecraftForge/issues'
+                url 'https://github.com/ukagaka-irono/MinecraftSpoon/issues'
             }
 
             licenses {
                 license {
                     name 'Forge Public License'
-                    url 'https://raw.github.com/MinecraftForge/MinecraftForge/master/MinecraftForge-License.txt'
+                    url 'https://raw.githubusercontent.com/ukagaka-irono/MinecraftSpoon/1.7.10/MinecraftForge-License.txt'
                     distribution 'repo'
                 }
             }
 
             developers {
+                developer {
+                    id 'ukagaka-irono'
+                    name 'ukagaka-irono'
+                    roles { role 'developer' }
+                }
                 developer {
                     id 'cpw'
                     name 'cpw'

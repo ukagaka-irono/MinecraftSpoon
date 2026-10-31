@@ -67,7 +67,8 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static int[] blendRanges = { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34 };
     public static float zombieBabyChance = 0.05f;
     public static boolean shouldSortRecipies = true;
-    public static boolean disableVersionCheck = false;
+    public static boolean disableVersionCheck = true;
+    public static boolean imeControl = true;
     public static int defaultSpawnFuzz = 20;
     public static boolean defaultHasSpawnFuzz = true;
 
@@ -78,15 +79,15 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         super(new ModMetadata());
         ModMetadata meta = getMetadata();
         meta.modId       = "Forge";
-        meta.name        = "Minecraft Forge";
+        meta.name        = "Spoon";
         meta.version     = String.format("%d.%d.%d.%d", majorVersion, minorVersion, revisionVersion, buildVersion);
-        meta.credits     = "Made possible with help from many people";
-        meta.authorList  = Arrays.asList("LexManos", "Eloraam", "Spacetoad");
-        meta.description = "Minecraft Forge is a common open source API allowing a broad range of mods " +
-                           "to work cooperatively together. It allows many mods to be created without " +
-                           "them editing the main Minecraft code.";
-        meta.url         = "http://MinecraftForge.net";
-        meta.updateUrl   = "http://MinecraftForge.net/forum/index.php/topic,5.0.html";
+        meta.credits     = "Based on Minecraft Forge, made possible with help from many people";
+        meta.authorList  = Arrays.asList("ukagaka-irono", "LexManos", "Eloraam", "Spacetoad");
+        meta.description = "Spoon is a fork of Minecraft Forge " + meta.version + " for Minecraft 1.7.10 (Spoon " +
+                           ForgeVersion.spoonVersion + "). It keeps the Forge API, so existing Forge mods " +
+                           "work cooperatively together without editing the main Minecraft code.";
+        meta.url         = "https://github.com/ukagaka-irono/MinecraftSpoon";
+        meta.updateUrl   = "https://github.com/ukagaka-irono/MinecraftSpoon/releases";
         meta.screenshots = new String[0];
         meta.logoFile    = "/forge_logo.png";
 
@@ -132,8 +133,8 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
 
         Property prop;
 
-        prop = config.get(CATEGORY_GENERAL, "disableVersionCheck", false);
-        prop.comment = "Set to true to disable Forge's version check mechanics. Forge queries a small json file on our server for version information. For more details see the ForgeVersion class in our github.";
+        prop = config.get(CATEGORY_GENERAL, "disableVersionCheck", true);
+        prop.comment = "Set to true to disable Spoon's version check mechanics. Spoon has no update server yet, so the check does nothing for now. For more details see the ForgeVersion class in our github.";
         // Language keys are a good idea to implement if you are using config GUIs. This allows you to use a .lang file that will hold the
         // "pretty" version of the property name as well as allow others to provide their own localizations.
         // This language key is also used to get the tooltip for a property. The tooltip language key is langKey + ".tooltip".
@@ -222,6 +223,12 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         defaultHasSpawnFuzz = prop.getBoolean(Boolean.TRUE);
         propOrder.add(prop.getName());
 
+        prop = config.get(Configuration.CATEGORY_GENERAL, "imeControl", true,
+                "Windows only. Detach the IME from the game window while no text field is focused, so movement keys like WASD work with a CJK IME turned on.");
+        prop.setLanguageKey("forge.configgui.imeControl");
+        imeControl = prop.getBoolean(true);
+        propOrder.add(prop.getName());
+
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
 
         if (config.hasChanged())
@@ -277,6 +284,11 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         MinecraftForge.EVENT_BUS.register(MinecraftForge.INTERNAL_HANDLER);
         ForgeChunkManager.captureConfig(evt.getModConfigurationDirectory());
         FMLCommonHandler.instance().bus().register(this);
+
+        if (evt.getSide().isClient())
+        {
+            net.minecraftforge.client.ime.IMEHandler.register();
+        }
 
         if (!ForgeModContainer.disableVersionCheck)
         {

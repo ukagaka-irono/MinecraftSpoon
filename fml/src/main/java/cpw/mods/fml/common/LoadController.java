@@ -116,7 +116,9 @@ public class LoadController
     {
         if (state.hasEvent())
         {
+            long start = System.nanoTime();
             masterChannel.post(state.getEvent(eventData));
+            FMLLog.info("Spoon startup: %s %d ms", state, (System.nanoTime() - start) / 1000000);
         }
     }
 
