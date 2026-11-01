@@ -18,6 +18,8 @@ What Spoon changes:
     only accepts characters that fit on the board.
   - Full-width letters such as U+FF4B are measured at the width they are drawn at, so centered text
     containing them no longer drifts left.
+  - A Mod Menu style mod list: search, sort, logo icons and badges on the left; details with Website and
+    Config buttons, clickable links and scrolling text on the right; and an Open Mods Folder button.
   - Faster startup: mod discovery skips method bodies, and each loading phase logs "Spoon startup: ..." timings.
   - The Forge version check is disabled; Spoon has no update server yet.
 
