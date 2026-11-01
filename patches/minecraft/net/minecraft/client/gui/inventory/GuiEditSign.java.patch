@@ -1,0 +1,112 @@
+--- ../src-base/minecraft/net/minecraft/client/gui/inventory/GuiEditSign.java
++++ ../src-work/minecraft/net/minecraft/client/gui/inventory/GuiEditSign.java
+@@ -7,6 +7,7 @@
+ import net.minecraft.client.gui.GuiScreen;
+ import net.minecraft.client.network.NetHandlerPlayClient;
+ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
++import net.minecraft.client.renderer.tileentity.TileEntitySignRenderer;
+ import net.minecraft.client.resources.I18n;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.network.play.client.C12PacketUpdateSign;
+@@ -21,6 +22,8 @@
+     private TileEntitySign field_146848_f;
+     private int field_146849_g;
+     private int field_146851_h;
++    /** Where typed characters go in the line being edited */
++    private int editCursor;
+     private GuiButton field_146852_i;
+     private static final String __OBFID = "CL_00000764";
+ 
+@@ -35,6 +38,7 @@
+         Keyboard.enableRepeatEvents(true);
+         this.field_146292_n.add(this.field_146852_i = new GuiButton(0, this.field_146294_l / 2 - 100, this.field_146295_m / 4 + 120, I18n.func_135052_a("gui.done", new Object[0])));
+         this.field_146848_f.func_145913_a(false);
++        this.editCursor = this.field_146848_f.field_145915_a[this.field_146851_h].length();
+     }
+ 
+     public void func_146281_b()
+@@ -69,26 +73,62 @@
+ 
+     protected void func_73869_a(char p_73869_1_, int p_73869_2_)
+     {
+-        if (p_73869_2_ == 200)
++        String line = this.field_146848_f.field_145915_a[this.field_146851_h];
++        this.editCursor = Math.min(this.editCursor, line.length());
++
++        if (p_73869_2_ == Keyboard.KEY_UP)
+         {
+             this.field_146851_h = this.field_146851_h - 1 & 3;
++            this.editCursor = this.field_146848_f.field_145915_a[this.field_146851_h].length();
+         }
+-
+-        if (p_73869_2_ == 208 || p_73869_2_ == 28 || p_73869_2_ == 156)
++        else if (p_73869_2_ == Keyboard.KEY_DOWN || p_73869_2_ == Keyboard.KEY_RETURN || p_73869_2_ == Keyboard.KEY_NUMPADENTER)
+         {
+             this.field_146851_h = this.field_146851_h + 1 & 3;
++            this.editCursor = this.field_146848_f.field_145915_a[this.field_146851_h].length();
+         }
+-
+-        if (p_73869_2_ == 14 && this.field_146848_f.field_145915_a[this.field_146851_h].length() > 0)
++        else if (p_73869_2_ == Keyboard.KEY_LEFT)
+         {
+-            this.field_146848_f.field_145915_a[this.field_146851_h] = this.field_146848_f.field_145915_a[this.field_146851_h].substring(0, this.field_146848_f.field_145915_a[this.field_146851_h].length() - 1);
++            this.editCursor = Math.max(0, this.editCursor - 1);
+         }
+-
+-        if (ChatAllowedCharacters.func_71566_a(p_73869_1_) && this.field_146848_f.field_145915_a[this.field_146851_h].length() < 15)
++        else if (p_73869_2_ == Keyboard.KEY_RIGHT)
+         {
+-            this.field_146848_f.field_145915_a[this.field_146851_h] = this.field_146848_f.field_145915_a[this.field_146851_h] + p_73869_1_;
++            this.editCursor = Math.min(line.length(), this.editCursor + 1);
+         }
++        else if (p_73869_2_ == Keyboard.KEY_HOME)
++        {
++            this.editCursor = 0;
++        }
++        else if (p_73869_2_ == Keyboard.KEY_END)
++        {
++            this.editCursor = line.length();
++        }
++        else if (p_73869_2_ == Keyboard.KEY_BACK)
++        {
++            if (this.editCursor > 0)
++            {
++                this.field_146848_f.field_145915_a[this.field_146851_h] = line.substring(0, this.editCursor - 1) + line.substring(this.editCursor);
++                --this.editCursor;
++            }
++        }
++        else if (p_73869_2_ == Keyboard.KEY_DELETE)
++        {
++            if (this.editCursor < line.length())
++            {
++                this.field_146848_f.field_145915_a[this.field_146851_h] = line.substring(0, this.editCursor) + line.substring(this.editCursor + 1);
++            }
++        }
++        else if (ChatAllowedCharacters.func_71566_a(p_73869_1_) && line.length() < 15)
++        {
++            String inserted = line.substring(0, this.editCursor) + p_73869_1_ + line.substring(this.editCursor);
+ 
++            // The server limits a line to 15 characters, and wide characters such as CJK must also fit the board
++            if (this.field_146289_q.func_78256_a(inserted) <= 90)
++            {
++                this.field_146848_f.field_145915_a[this.field_146851_h] = inserted;
++                ++this.editCursor;
++            }
++        }
++
+         if (p_73869_2_ == 1)
+         {
+             this.func_146284_a(this.field_146852_i);
+@@ -139,10 +179,12 @@
+         if (this.field_146849_g / 6 % 2 == 0)
+         {
+             this.field_146848_f.field_145918_i = this.field_146851_h;
++            TileEntitySignRenderer.editCursor = this.editCursor;
+         }
+ 
+         TileEntityRendererDispatcher.field_147556_a.func_147549_a(this.field_146848_f, -0.5D, -0.75D, -0.5D, 0.0F);
+         this.field_146848_f.field_145918_i = -1;
++        TileEntitySignRenderer.editCursor = -1;
+         GL11.glPopMatrix();
+         super.func_73863_a(p_73863_1_, p_73863_2_, p_73863_3_);
+     }

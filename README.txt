@@ -12,6 +12,12 @@ What Spoon changes:
   - CJK IME support on Windows: the IME is detached from the game window while no text field is focused,
     so WASD and other gameplay keys work with a Japanese/Chinese/Korean IME turned on.
     Set "imeControl" to false in config/forge.cfg to turn this off.
+    Text committed by an IME reaches chat, signs and other text fields, and the IME composition and
+    candidate windows open at the caret.
+  - Signs: a movable cursor (arrow keys, Home/End, Delete) so text can be inserted mid-line, and a line
+    only accepts characters that fit on the board.
+  - Full-width letters such as U+FF4B are measured at the width they are drawn at, so centered text
+    containing them no longer drifts left.
   - Faster startup: mod discovery skips method bodies, and each loading phase logs "Spoon startup: ..." timings.
   - The Forge version check is disabled; Spoon has no update server yet.
 
