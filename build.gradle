@@ -110,6 +110,74 @@ task runClient(type: JavaExec) {
     }
 }
 
+// Prism Launcher instance: Spoon is not in Prism's metadata, so the instance carries its own
+// component (patches/<uid>.json) and the universal jar as a local library.
+def prismUid = 'io.github.ukagaka-irono.spoon'
+def prismDir = file("$buildDir/prism")
+
+task generatePrismInstance {
+    group = 'Spoon'
+    description = 'Writes the Prism Launcher instance files for packagePrism.'
+    inputs.file 'fml/jsons/1.7.10-rel.json'
+    inputs.property 'version', { project.version.toString() }
+    outputs.dir prismDir
+    doLast {
+        def mc = minecraft.version
+        def componentVersion = project.version.toString() - "${mc}-"
+        def rel = new groovy.json.JsonSlurper().parse(file('fml/jsons/1.7.10-rel.json'))
+        def libraries = rel.versionInfo.libraries.findAll { it.clientreq != false }.collect { lib ->
+            def name = lib.name.replace('@minecraft_version@', mc).replace('@version@', componentVersion)
+            if (name.startsWith("${project.group}:${project.archivesBaseName}:")) {
+                // Prism reads local libraries from the instance's libraries folder
+                return [name: "${name}:universal", 'MMC-hint': 'local']
+            }
+            def entry = [name: name]
+            if (lib.url) {
+                entry.url = lib.url.endsWith('/') ? lib.url : lib.url + '/'
+            }
+            return entry
+        }
+        def requires = [[equals: mc, uid: 'net.minecraft']]
+        def component = [
+            formatVersion: 1,
+            name: 'Spoon',
+            uid: prismUid,
+            version: componentVersion,
+            order: 5,
+            requires: requires,
+            mainClass: 'net.minecraft.launchwrapper.Launch',
+            '+tweakers': ['cpw.mods.fml.common.launcher.FMLTweaker'],
+            libraries: libraries
+        ]
+        def lwjgl = '2.9.4-nightly-20150209'
+        def pack = [
+            components: [
+                [cachedName: 'LWJGL 2', cachedVersion: lwjgl, dependencyOnly: true, uid: 'org.lwjgl', version: lwjgl],
+                [cachedName: 'Minecraft', cachedRequires: [[suggests: lwjgl, uid: 'org.lwjgl']], cachedVersion: mc, important: true, uid: 'net.minecraft', version: mc],
+                [cachedName: 'Spoon', cachedRequires: requires, cachedVersion: componentVersion, uid: prismUid, version: componentVersion]
+            ],
+            formatVersion: 1
+        ]
+        delete prismDir
+        file("$prismDir/patches").mkdirs()
+        file("$prismDir/patches/${prismUid}.json").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(component)) + '\n'
+        file("$prismDir/mmc-pack.json").text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(pack)) + '\n'
+        file("$prismDir/instance.cfg").text = "[General]\nConfigVersion=1.3\nInstanceType=OneSix\nname=Spoon ${spoonVersion()}\niconKey=default\n"
+    }
+}
+
+task packagePrism(type: Zip) {
+    group = 'Spoon'
+    description = 'Builds a Prism Launcher instance zip (Add Instance > Import) in build/distributions.'
+    dependsOn 'packageUniversal', generatePrismInstance
+    classifier = 'prism'
+    destinationDir = file("$buildDir/distributions")
+    from prismDir
+    from({ tasks.packageUniversal.archivePath }) {
+        into 'libraries'
+    }
+}
+
 repositories {
     mavenLocal()
     flatDir {

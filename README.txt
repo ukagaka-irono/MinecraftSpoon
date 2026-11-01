@@ -45,6 +45,11 @@ Build the universal jar and the installer (output in build/distributions):
   Windows:     .\gradlew.bat packageUniversal packageInstaller
   MacOS/Linux: ./gradlew packageUniversal packageInstaller
 
+Build a Prism Launcher instance (build/distributions/spoon-...-prism.zip). In Prism, use
+Add Instance > Import and pick the zip; Prism downloads Minecraft 1.7.10 and the libraries itself:
+  Windows:     .\gradlew.bat packagePrism
+  MacOS/Linux: ./gradlew packagePrism
+
 Run the client from the workspace (optionally with -PmcUsername=<name>):
   Windows:     .\gradlew.bat runClient
   MacOS/Linux: ./gradlew runClient
