@@ -42,14 +42,19 @@ import static net.minecraftforge.gradle.dev.ForgeDevPlugin.*
 apply plugin: 'maven'
 apply plugin: 'forgedev'
 
-// The GTNH ForgeGradle fork writes a Java toolchain block (Gradle 6.7+) into the generated
+// The GTNH ForgeGradle fork writes a Java 8 toolchain block (Gradle 6.7+) into the generated
 // eclipse/Clean and eclipse/Forge projects, but its forgedev tasks only run on Gradle 4.x.
+// Compile for Java 6 instead, as Forge 1.7.10 did: many coremods rewrite vanilla methods without
+// recomputing stack map frames, and the JVM only falls back to the old verifier for class files
+// of version 50 or lower, so Java 8 class files make those mods fail with VerifyError.
+// obfuscateJar builds eclipse/Forge in a separate Gradle build, so this has to go in its build.gradle.
 tasks.matching { it.name in ['generateProjectClean', 'generateProjectForge'] }.all {
     doLast {
         ['eclipse/Clean/build.gradle', 'eclipse/Forge/build.gradle'].each { path ->
             def f = file(path)
             if (f.exists()) {
-                f.text = f.text.replaceAll(/(?s)java \{\s*toolchain \{.*?\}\s*\}\s*/, '')
+                f.text = f.text.replaceAll(/(?s)java \{\s*toolchain \{.*?\}\s*\}\s*/,
+                                           "sourceCompatibility = '1.6'\ntargetCompatibility = '1.6'\n\n")
             }
         }
     }
