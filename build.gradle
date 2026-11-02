@@ -92,6 +92,24 @@ tasks.matching { it.name == 'createChangelog' }.all { task ->
     }
 }
 
+// ForgeGradle builds the FML version from `git describe` in fml/ and the Jenkins build number,
+// which gives 7.99.41.0 here. Pin it to the FML of Forge 10.13.4.1614 like ForgeVersion does,
+// so mods and coremods that check the FML version see the one they were written against.
+// setupForge also copied the file into the eclipse projects, whose resources go into the jar too.
+def fmlVersion = '7.99.40.1614'
+tasks.matching { it.name == 'createVersionPropertiesFML' }.all { task ->
+    task.setVersion({ "${minecraft.version}-${fmlVersion}".toString() })
+    task.inputs.property 'fmlVersion', fmlVersion
+    task.doLast {
+        ['eclipse/Clean', 'eclipse/Forge'].each { dir ->
+            def target = file("$dir/src/main/resources/fmlversion.properties")
+            if (target.exists()) {
+                target.text = task.outputFile.text
+            }
+        }
+    }
+}
+
 def spoonVersion() {
     def m = file('src/main/java/net/minecraftforge/common/ForgeVersion.java').text =~ /spoonVersion\s*=\s*"([^"]+)"/
     return m ? m[0][1] : 'unknown'
