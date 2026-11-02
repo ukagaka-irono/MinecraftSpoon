@@ -27,7 +27,7 @@ public class ForgeVersion
     //Spoon pins this to the last Forge build for 1.7.10 so mods requiring Forge@[10.13.4.1614,) still load.
     public static final int buildVersion    = 1614;
     //Version of Spoon itself, shown in the branding next to the Forge version it is compatible with.
-    public static final String spoonVersion = "1.0.0";
+    public static final String spoonVersion = "1.0.0-beta.1";
     //Spoon has no update server yet; the version check is skipped while this is empty.
     private static final String updateJsonURL = "";
 
