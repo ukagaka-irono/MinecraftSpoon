@@ -1,0 +1,15 @@
+--- ../src-base/minecraft/net/minecraft/client/gui/FontRenderer.java
++++ ../src-work/minecraft/net/minecraft/client/gui/FontRenderer.java
+@@ -582,8 +582,10 @@
+ 
+                 if (k > 7)
+                 {
+-                    k = 15;
+-                    j = 0;
++                    // Wide glyphs used to count as a full cell, but renderUnicodeChar only advances by the glyph,
++                    // so narrow full-width letters like U+FF4B measured wider than drawn and centered text drifted left.
++                    // Round the drawn advance up instead; full-cell glyphs such as kana keep their width of 9.
++                    return (k + 2 - j) / 2 + 1;
+                 }
+ 
+                 ++k;

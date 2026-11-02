@@ -14,7 +14,8 @@
 #occupational hazards
 /eclipse/
 /repo/
-/buildSrc
+/buildSrc/build/
+/buildSrc/.gradle/
 
 #Patch rejects
 *.rej

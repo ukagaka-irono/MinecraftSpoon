@@ -1,0 +1,31 @@
+--- ../src-base/minecraft/net/minecraft/client/renderer/tileentity/TileEntitySignRenderer.java
++++ ../src-work/minecraft/net/minecraft/client/renderer/tileentity/TileEntitySignRenderer.java
+@@ -17,6 +17,8 @@
+     private static final ResourceLocation field_147513_b = new ResourceLocation("textures/entity/sign.png");
+     private final ModelSign field_147514_c = new ModelSign();
+     private static final String __OBFID = "CL_00000970";
++    /** Caret position in the line being edited, set by GuiEditSign while it renders the sign, otherwise -1 */
++    public static int editCursor = -1;
+ 
+     public void func_147500_a(TileEntitySign p_147500_1_, double p_147500_2_, double p_147500_4_, double p_147500_6_, float p_147500_8_)
+     {
+@@ -77,8 +79,18 @@
+ 
+             if (i == p_147500_1_.field_145918_i)
+             {
++                String text = s;
+                 s = "> " + s + " <";
+-                fontrenderer.func_78276_b(s, -fontrenderer.func_78256_a(s) / 2, i * 10 - p_147500_1_.field_145915_a.length * 5, b0);
++                int x = -fontrenderer.func_78256_a(s) / 2;
++                int y = i * 10 - p_147500_1_.field_145915_a.length * 5;
++                fontrenderer.func_78276_b(s, x, y, b0);
++
++                if (editCursor >= 0)
++                {
++                    int caretX = x + fontrenderer.func_78256_a("> " + text.substring(0, Math.min(editCursor, text.length())));
++                    fontrenderer.func_78276_b("|", caretX - 1, y, b0);
++                    net.minecraftforge.client.ime.IMEHandler.setCaretFromRender(caretX, y, y + fontrenderer.field_78288_b);
++                }
+             }
+             else
+             {

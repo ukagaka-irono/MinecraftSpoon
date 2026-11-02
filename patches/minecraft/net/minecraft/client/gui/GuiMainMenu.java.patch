@@ -1,6 +1,13 @@
 --- ../src-base/minecraft/net/minecraft/client/gui/GuiMainMenu.java
 +++ ../src-work/minecraft/net/minecraft/client/gui/GuiMainMenu.java
-@@ -25,6 +25,7 @@
+@@ -18,13 +18,13 @@
+ import net.minecraft.client.renderer.Tessellator;
+ import net.minecraft.client.renderer.texture.DynamicTexture;
+ import net.minecraft.client.resources.I18n;
+-import net.minecraft.realms.RealmsBridge;
+ import net.minecraft.util.EnumChatFormatting;
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.ResourceLocation;
  import net.minecraft.world.demo.DemoWorldServer;
  import net.minecraft.world.storage.ISaveFormat;
  import net.minecraft.world.storage.WorldInfo;
@@ -8,7 +15,32 @@
  import org.apache.commons.io.Charsets;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -507,6 +508,7 @@
+@@ -234,11 +234,6 @@
+             this.field_146297_k.func_147108_a(new GuiMultiplayer(this));
+         }
+ 
+-        if (p_146284_1_.field_146127_k == 14)
+-        {
+-            this.func_140005_i();
+-        }
+-
+         if (p_146284_1_.field_146127_k == 4)
+         {
+             this.field_146297_k.func_71400_g();
+@@ -267,12 +262,6 @@
+         }
+     }
+ 
+-    private void func_140005_i()
+-    {
+-        RealmsBridge realmsbridge = new RealmsBridge();
+-        realmsbridge.switchToRealms(this);
+-    }
+-
+     public void func_73878_a(boolean p_73878_1_, int p_73878_2_)
+     {
+         if (p_73878_1_ && p_73878_2_ == 12)
+@@ -501,6 +490,7 @@
                  this.func_73731_b(this.field_146289_q, brd, 2, this.field_146295_m - ( 10 + i * (this.field_146289_q.field_78288_b + 1)), 16777215);
              }
          }

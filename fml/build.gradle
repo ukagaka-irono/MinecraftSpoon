@@ -4,7 +4,19 @@ buildscript {
         mavenLocal()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            name = "gtnh"
+            url = "https://nexus.gtnewhorizons.com/repository/public/"
+        }
+        maven {
+            name = "jitpack"
+            url = "https://jitpack.io"
+        }
+        maven {
+            name = "mojang"
+            url = "https://libraries.minecraft.net/"
         }
         maven {
             name = "sonatype"
@@ -12,7 +24,12 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        // ForgeGradle 1.2 maintained by GTNewHorizons; the original 1.2-SNAPSHOT is no longer downloadable
+        classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.13'
+    }
+    configurations.classpath {
+        // Srg2Source asks for a JDT build that is no longer published anywhere
+        resolutionStrategy.force 'org.eclipse.jdt:org.eclipse.jdt.core:3.10.0'
     }
 }
 
@@ -39,10 +56,6 @@ minecraft {
 
 group = 'net.minecraftforge'
 version = getVersionFromGit(getProject())
-
-jenkins {
-    job = 'fml'
-}
 
 uploadArchives {
     repositories {

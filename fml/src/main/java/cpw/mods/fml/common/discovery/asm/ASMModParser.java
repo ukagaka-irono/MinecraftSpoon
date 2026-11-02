@@ -50,7 +50,8 @@ public class ASMModParser
         try
         {
             ClassReader reader = new ClassReader(stream);
-            reader.accept(new ModClassVisitor(this), 0);
+            // Discovery only reads class, field and method annotations, so method bodies and debug info are skipped
+            reader.accept(new ModClassVisitor(this), ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
         }
         catch (Exception ex)
         {

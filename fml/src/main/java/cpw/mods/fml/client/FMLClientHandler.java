@@ -235,7 +235,9 @@ public class FMLClientHandler implements IFMLSidedHandler
         }
         finally
         {
+            long start = System.nanoTime();
             client.refreshResources();
+            FMLLog.info("Spoon startup: resource reload before preinit %d ms", (System.nanoTime() - start) / 1000000);
         }
 
         try
@@ -324,7 +326,9 @@ public class FMLClientHandler implements IFMLSidedHandler
         }
 
         // Reload resources
+        long reloadStart = System.nanoTime();
         client.refreshResources();
+        FMLLog.info("Spoon startup: resource reload after init %d ms", (System.nanoTime() - reloadStart) / 1000000);
         RenderingRegistry.instance().loadEntityRenderers((Map<Class<? extends Entity>, Render>)RenderManager.instance.entityRenderMap);
         guiFactories = HashBiMap.create();
         for (ModContainer mc : Loader.instance().getActiveModList())

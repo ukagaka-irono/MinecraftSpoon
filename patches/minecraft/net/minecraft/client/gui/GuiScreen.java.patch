@@ -84,3 +84,15 @@
      }
  
      public void func_73866_w_() {}
+@@ -299,6 +318,11 @@
+         {
+             this.func_73869_a(Keyboard.getEventCharacter(), Keyboard.getEventKey());
+         }
++        // LWJGL hands over characters committed by an IME as key 0 with the key released
++        else if (Keyboard.getEventKey() == 0 && Keyboard.getEventCharacter() >= ' ')
++        {
++            this.func_73869_a(Keyboard.getEventCharacter(), 0);
++        }
+ 
+         this.field_146297_k.func_152348_aa();
+     }

@@ -346,6 +346,7 @@ public class Loader
             }
             mods.add(new InjectedModContainer(mc,mc.getSource()));
         }
+        long discoveryStart = System.nanoTime();
         ModDiscoverer discoverer = new ModDiscoverer();
         FMLLog.fine("Attempting to load mods contained in the minecraft jar file and associated classes");
         discoverer.findClasspathMods(modClassLoader);
@@ -362,6 +363,7 @@ public class Loader
         }
 
         mods.addAll(discoverer.identifyMods());
+        FMLLog.info("Spoon startup: mod discovery %d ms", (System.nanoTime() - discoveryStart) / 1000000);
         identifyDuplicates(mods);
         namedMods = Maps.uniqueIndex(mods, new ModIdFunction());
         FMLLog.info("Forge Mod Loader has identified %d mod%s to load", mods.size(), mods.size() != 1 ? "s" : "");
