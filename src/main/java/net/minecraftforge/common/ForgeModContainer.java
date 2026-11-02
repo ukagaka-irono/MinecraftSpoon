@@ -288,6 +288,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
         if (evt.getSide().isClient())
         {
             net.minecraftforge.client.ime.IMEHandler.register();
+            net.minecraftforge.client.gui.ModListHandler.register();
         }
 
         if (!ForgeModContainer.disableVersionCheck)

@@ -20,6 +20,8 @@ What Spoon changes:
     containing them no longer drifts left.
   - A Mod Menu style mod list: search, sort, logo icons and badges on the left; details with Website and
     Config buttons, clickable links and scrolling text on the right; and an Open Mods Folder button.
+    It is a separate screen that opens in place of Forge's GuiModList, which Spoon keeps unchanged so mods
+    that extend it, such as EnderCore, keep working.
   - Faster startup: mod discovery skips method bodies, and each loading phase logs "Spoon startup: ..." timings.
   - The Forge version check is disabled; Spoon has no update server yet.
 

@@ -21,7 +21,7 @@ import com.google.common.collect.Lists;
  */
 public class GuiSlotModInfo extends GuiScrollingList
 {
-    private GuiModList parent;
+    private GuiSpoonModList parent;
     private List<Line> lines = Lists.newArrayList();
 
     public static class Line
@@ -40,9 +40,9 @@ public class GuiSlotModInfo extends GuiScrollingList
         }
     }
 
-    public GuiSlotModInfo(GuiModList parent, int listWidth, int top, int bottom, int left)
+    public GuiSlotModInfo(GuiSpoonModList parent, int listWidth, int top, int bottom, int left)
     {
-        super(parent.getMinecraftInstance(), listWidth, parent.height, top, bottom, left, GuiModList.LINE_HEIGHT);
+        super(parent.getMinecraftInstance(), listWidth, parent.height, top, bottom, left, GuiSpoonModList.LINE_HEIGHT);
         this.parent = parent;
         this.func_27258_a(false);
     }
@@ -69,7 +69,7 @@ public class GuiSlotModInfo extends GuiScrollingList
     @Override
     protected int getContentHeight()
     {
-        return Math.max(this.getSize() * GuiModList.LINE_HEIGHT, this.bottom - this.top - 4);
+        return Math.max(this.getSize() * GuiSpoonModList.LINE_HEIGHT, this.bottom - this.top - 4);
     }
 
     @Override
@@ -91,13 +91,13 @@ public class GuiSlotModInfo extends GuiScrollingList
     @Override
     protected void drawBackground()
     {
-        // GuiModList draws the screen background before its lists
+        // GuiSpoonModList draws the screen background before its lists
     }
 
     @Override
     protected void drawSlot(int index, int right, int top, int height, Tessellator tess)
     {
         Line line = this.lines.get(index);
-        this.parent.getFontRenderer().drawString(line.text, this.left + GuiModList.TEXT_INSET + line.indent, top, line.color);
+        this.parent.getFontRenderer().drawString(line.text, this.left + GuiSpoonModList.TEXT_INSET + line.indent, top, line.color);
     }
 }
