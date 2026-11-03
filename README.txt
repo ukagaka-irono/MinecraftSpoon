@@ -1,6 +1,7 @@
 *** SPOON ***
 Spoon is a fork of Minecraft Forge 10.13.4.1614 for Minecraft 1.7.10.
 Repository: https://github.com/ukagaka-irono/MinecraftSpoon
+日本語: README.ja.txt
 
 Spoon keeps the Forge and FML packages (net.minecraftforge, cpw.mods.fml), the "Forge" and "FML" mod ids
 and the Forge version number, so existing 1.7.10 Forge mods load without changes.
