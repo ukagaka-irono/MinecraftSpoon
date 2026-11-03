@@ -67,12 +67,14 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static int[] blendRanges = { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34 };
     public static float zombieBabyChance = 0.05f;
     public static boolean shouldSortRecipies = true;
-    public static boolean disableVersionCheck = true;
+    public static boolean disableVersionCheck = false;
     public static boolean imeControl = true;
     public static int defaultSpawnFuzz = 20;
     public static boolean defaultHasSpawnFuzz = true;
 
     private static Configuration config;
+    //Written to forge.cfg so Spoon can tell files written before a default changed. Files without it come from Forge or Spoon 1.0.0-beta.1.
+    private static final String CONFIG_VERSION = "1";
 
     public ForgeModContainer()
     {
@@ -93,7 +95,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
 
         config = null;
         File cfgFile = new File(Loader.instance().getConfigDir(), "forge.cfg");
-        config = new Configuration(cfgFile);
+        config = new Configuration(cfgFile, CONFIG_VERSION);
 
         syncConfig(true);
     }
@@ -133,8 +135,13 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
 
         Property prop;
 
-        prop = config.get(CATEGORY_GENERAL, "disableVersionCheck", true);
-        prop.comment = "Set to true to disable Spoon's version check mechanics. Spoon has no update server yet, so the check does nothing for now. For more details see the ForgeVersion class in our github.";
+        prop = config.get(CATEGORY_GENERAL, "disableVersionCheck", false);
+        prop.comment = "Set to true to disable Spoon's version check mechanics. When a new Spoon version is out, the title screen shows it. For more details see the ForgeVersion class in our github.";
+        if (load && !config.isChild && !CONFIG_VERSION.equals(config.getLoadedConfigVersion()))
+        {
+            // Spoon 1.0.0-beta.1 wrote true here by default while it had no update server, so turn the check on once.
+            prop.set(false);
+        }
         // Language keys are a good idea to implement if you are using config GUIs. This allows you to use a .lang file that will hold the
         // "pretty" version of the property name as well as allow others to provide their own localizations.
         // This language key is also used to get the tooltip for a property. The tooltip language key is langKey + ".tooltip".

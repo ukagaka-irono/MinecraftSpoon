@@ -73,17 +73,19 @@ Spoon には、Minecraft 1.7.10 と同じバージョンの Java が必要です
   ように `GuiModList` を拡張する Mod もそのまま動きます。
 * **起動の高速化:** Mod を探すときにメソッドの中身を読み飛ばします。読み込みの各段階にかかった時間を
   `Spoon startup: ...` としてログに出力します。
-* **バージョンチェックなし:** Spoon にはまだ更新サーバーがありません。新しいバージョンは[リリースページ][Download]で
-  確認してください。
+* **バージョンチェック:** 新しいバージョンが出ると、タイトル画面に表示します。起動時に、Web サイトにある
+  [promotions_slim.json][Promotions]（Forge と同じ形式）を読みます。正式版がまだないあいだは、タイトル画面に
+  ベータ版の警告も表示します。
 
 ## 設定
 
-| 設定     | `config/forge.cfg` での名前 | 初期値 | 説明 |
-|----------|-----------------------------|--------|------|
-| IME 制御 | `imeControl`（`general`）   | `true` | Windows でのみ働きます。`false` にすると、Spoon は IME を切り離さなくなります。 |
+| 設定                               | `config/forge.cfg` での名前          | 初期値  | 説明 |
+|------------------------------------|--------------------------------------|---------|------|
+| IME 制御                           | `imeControl`（`general`）            | `true`  | Windows でのみ働きます。`false` にすると、Spoon は IME を切り離さなくなります。 |
+| Spoon のバージョンチェックを無効化 | `disableVersionCheck`（`general`）   | `false` | `true` にすると、起動時に新しいバージョンを確認しなくなります。 |
 
 ゲーム内で変更するときは、タイトル画面の「Mods」で Spoon を選び、「設定」>「一般設定」を開きます。
-タイトル画面で変更した設定はすぐに反映されます。
+タイトル画面で変更した「IME 制御」はすぐに反映されます。バージョンチェックの設定は、次に起動したときから反映されます。
 
 # Mod の作成
 
@@ -149,6 +151,7 @@ Spoon は Minecraft Forge と同じ条件で配布しています。[MinecraftFo
 [Prism]: https://prismlauncher.org/
 [Mod Menu]: https://modrinth.com/mod/modmenu
 [Adoptium-8]: https://adoptium.net/temurin/releases/?version=8
+[Promotions]: https://ukagaka-irono.github.io/minecraft-spoon/promotions_slim.json
 
 [License]: ../MinecraftForge-License.txt
 [Credits]: ../MinecraftForge-Credits.txt

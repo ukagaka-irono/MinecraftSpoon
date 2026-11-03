@@ -8,11 +8,13 @@ import static net.minecraftforge.common.ForgeVersion.Status.*;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Map;
 
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 
@@ -28,8 +30,10 @@ public class ForgeVersion
     public static final int buildVersion    = 1614;
     //Version of Spoon itself, shown in the branding next to the Forge version it is compatible with.
     public static final String spoonVersion = "1.0.0-beta.1";
-    //Spoon has no update server yet; the version check is skipped while this is empty.
-    private static final String updateJsonURL = "";
+    //Lists the latest and recommended Spoon versions in the format of Forge's promotions_slim.json. It is a static file
+    //on GitHub Pages rather than the GitHub API, which allows only 60 requests an hour per IP address.
+    private static final String updateJsonURL = "https://ukagaka-irono.github.io/minecraft-spoon/promotions_slim.json";
+    private static final int timeoutMillis = 5000;
 
     private static Status status = PENDING;
     private static String target = null;
@@ -82,11 +86,7 @@ public class ForgeVersion
 
     public static void startVersionCheck()
     {
-        if (updateJsonURL.isEmpty())
-        {
-            return;
-        }
-        new Thread("Spoon Version Check")
+        Thread thread = new Thread("Spoon Version Check")
         {
             @SuppressWarnings("unchecked")
             @Override
@@ -94,64 +94,74 @@ public class ForgeVersion
             {
                 try
                 {
-                    URL url = new URL(updateJsonURL);
-                    InputStream con = url.openStream();
-                    String data = new String(ByteStreams.toByteArray(con));
-                    con.close();
+                    URLConnection con = new URL(updateJsonURL).openConnection();
+                    con.setConnectTimeout(timeoutMillis);
+                    con.setReadTimeout(timeoutMillis);
+                    InputStream in = con.getInputStream();
+                    String data = new String(ByteStreams.toByteArray(in), "UTF-8");
+                    in.close();
 
                     Map<String, Object> json = new Gson().fromJson(data, Map.class);
                     //String homepage = (String)json.get("homepage");
-                    Map<String, String> promos = (Map<String, String>)json.get("promos");
-
-                    String rec = promos.get(MinecraftForge.MC_VERSION + "-recommended");
-                    String lat = promos.get(MinecraftForge.MC_VERSION + "-latest");
-                    ArtifactVersion current = new DefaultArtifactVersion(getVersion());
-
-                    if (rec != null)
-                    {
-                        ArtifactVersion recommended = new DefaultArtifactVersion(rec);
-                        int diff = recommended.compareTo(current);
-
-                        if (diff == 0)
-                            status = UP_TO_DATE;
-                        else if (diff < 0)
-                        {
-                            status = AHEAD;
-                            if (lat != null)
-                            {
-                                if (current.compareTo(new DefaultArtifactVersion(lat)) < 0)
-                                {
-                                    status = OUTDATED;
-                                    target = lat;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            status = OUTDATED;
-                            target = rec;
-                        }
-                    }
-                    else if (lat != null)
-                    {
-                        if (current.compareTo(new DefaultArtifactVersion(lat)) < 0)
-                        {
-                            status = BETA_OUTDATED;
-                            target = lat;
-                        }
-                        else
-                            status = BETA;
-                    }
-                    else
-                        status = BETA;
+                    checkPromos((Map<String, String>)json.get("promos"));
                 }
                 catch (Exception e)
                 {
-                    e.printStackTrace();
+                    FMLLog.warning("Spoon could not check for a new version: %s", e);
                     status = FAILED;
                 }
             }
-        }.start();
+        };
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    /**
+     * Compares Spoon's own version, not the pinned Forge version, with the promos of the update JSON.
+     */
+    private static void checkPromos(Map<String, String> promos)
+    {
+        String rec = promos.get(MinecraftForge.MC_VERSION + "-recommended");
+        String lat = promos.get(MinecraftForge.MC_VERSION + "-latest");
+        ArtifactVersion current = new DefaultArtifactVersion(spoonVersion);
+
+        if (rec != null)
+        {
+            ArtifactVersion recommended = new DefaultArtifactVersion(rec);
+            int diff = recommended.compareTo(current);
+
+            if (diff == 0)
+                status = UP_TO_DATE;
+            else if (diff < 0)
+            {
+                status = AHEAD;
+                if (lat != null)
+                {
+                    if (current.compareTo(new DefaultArtifactVersion(lat)) < 0)
+                    {
+                        status = OUTDATED;
+                        target = lat;
+                    }
+                }
+            }
+            else
+            {
+                status = OUTDATED;
+                target = rec;
+            }
+        }
+        else if (lat != null)
+        {
+            if (current.compareTo(new DefaultArtifactVersion(lat)) < 0)
+            {
+                status = BETA_OUTDATED;
+                target = lat;
+            }
+            else
+                status = BETA;
+        }
+        else
+            status = BETA;
     }
 }
 

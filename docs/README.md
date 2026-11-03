@@ -70,16 +70,20 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   It is a separate screen that opens in place of Forge's `GuiModList`, which Spoon keeps unchanged so mods that extend
   it, such as EnderCore, keep working.
 * **Faster startup:** mod discovery skips method bodies, and each loading phase logs `Spoon startup: ...` timings.
-* **No version check:** Spoon has no update server yet. Watch [the releases page][Download] for new versions.
+* **Version check:** the title screen shows when a new Spoon version is out. At startup, Spoon reads
+  [promotions_slim.json][Promotions] from its website, in the format Forge uses. While there is no stable release, the
+  title screen also shows a beta warning.
 
 ## Settings
 
-| Setting      | In `config/forge.cfg`           | Default | Description |
-|--------------|---------------------------------|---------|-------------|
-| IME Control  | `imeControl` (`general`)        | `true`  | Windows only. Set it to `false` to stop Spoon from detaching the IME. |
+| Setting                     | In `config/forge.cfg`              | Default | Description |
+|-----------------------------|------------------------------------|---------|-------------|
+| IME Control                 | `imeControl` (`general`)           | `true`  | Windows only. Set it to `false` to stop Spoon from detaching the IME. |
+| Disable Spoon Version Check | `disableVersionCheck` (`general`)  | `false` | Set it to `true` to stop Spoon from checking for a new version at startup. |
 
 To change a setting in game, open **Mods** on the title screen, select Spoon and choose
-**Config > General Settings**. A change made from the title screen applies at once.
+**Config > General Settings**. A change to IME Control made from the title screen applies at once; the version check
+setting applies from the next start.
 
 # Creating Mods
 
@@ -143,6 +147,7 @@ The Paulscode license files apply to the bundled sound libraries.
 [Prism]: https://prismlauncher.org/
 [Mod Menu]: https://modrinth.com/mod/modmenu
 [Adoptium-8]: https://adoptium.net/temurin/releases/?version=8
+[Promotions]: https://ukagaka-irono.github.io/minecraft-spoon/promotions_slim.json
 
 [License]: ../MinecraftForge-License.txt
 [Credits]: ../MinecraftForge-Credits.txt
