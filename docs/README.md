@@ -68,7 +68,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 * **A [Mod Menu] style mod list:** search, sort, logo icons and badges on the left; details with **Website** and
   **Config** buttons, clickable links and scrolling text on the right; and an **Open Mods Folder** button.
   It is a separate screen that opens in place of Forge's `GuiModList`, which Spoon keeps unchanged so mods that extend
-  it, such as EnderCore, keep working.
+  it, such as EnderCore, keep working. The **Mod Options...** button of the pause menu opens it too, in place of
+  Forge's `GuiIngameModOptions`, which Forge 1.7.10 never finished.
 * **Faster startup:** mod discovery skips method bodies, and each loading phase logs `Spoon startup: ...` timings.
 * **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
   mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
