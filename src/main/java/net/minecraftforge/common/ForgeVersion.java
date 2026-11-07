@@ -29,7 +29,7 @@ public class ForgeVersion
     //Spoon pins this to the last Forge build for 1.7.10 so mods requiring Forge@[10.13.4.1614,) still load.
     public static final int buildVersion    = 1614;
     //Version of Spoon itself, shown in the branding next to the Forge version it is compatible with.
-    public static final String spoonVersion = "1.0.0-beta.3";
+    public static final String spoonVersion = "1.0.0-beta.4";
     //Lists the latest and recommended Spoon versions in the format of Forge's promotions_slim.json. It is a static file
     //on GitHub Pages rather than the GitHub API, which allows only 60 requests an hour per IP address.
     private static final String updateJsonURL = "https://ukagaka-irono.github.io/minecraft-spoon/promotions_slim.json";
