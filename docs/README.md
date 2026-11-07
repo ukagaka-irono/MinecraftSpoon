@@ -85,6 +85,9 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 * **World backups:** as in newer Minecraft versions, the world selection screen has a **Backup** button. It zips the
   selected world into the `backups` folder as `<date>_<world folder>.zip`, showing its progress, and the screen that
   follows has an **Open Backups Folder** button.
+* **Screenshots without a freeze:** as in newer Minecraft versions, the screenshot key reads the screen at once and
+  writes the PNG file on another thread, so the game no longer stops for a moment. The chat message comes once the file
+  is written.
 * **Japanese translation:** the config screens, Spoon's settings, the `/forge` command, the **Mods** and
   **Mod Options...** buttons and FML's error screens, such as the one for missing mods, are translated into Japanese.
   The error screens can open before the language files are loaded, and then show English.

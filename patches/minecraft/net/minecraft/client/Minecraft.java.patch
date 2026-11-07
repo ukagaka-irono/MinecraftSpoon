@@ -278,3 +278,12 @@
                  return i;
              }
          }
+@@ -2885,7 +2817,7 @@
+                     }
+                     else if (i == this.field_71474_y.field_151447_Z.func_151463_i())
+                     {
+-                        this.field_71456_v.func_146158_b().func_146227_a(ScreenShotHelper.func_148260_a(this.field_71412_D, this.field_71443_c, this.field_71440_d, this.field_147124_at));
++                        net.minecraftforge.client.ScreenshotSaver.takeScreenshot(this);
+                     }
+                 }
+                 else if (i == this.field_71474_y.field_152399_aq.func_151463_i())
