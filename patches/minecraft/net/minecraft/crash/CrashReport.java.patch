@@ -1,0 +1,10 @@
+--- ../src-base/minecraft/net/minecraft/crash/CrashReport.java
++++ ../src-work/minecraft/net/minecraft/crash/CrashReport.java
+@@ -164,6 +164,7 @@
+         if (this.stacktrace != null && this.stacktrace.length > 0)
+         {
+             p_71506_1_.append("-- Head --\n");
++            p_71506_1_.append(net.minecraftforge.logging.CrashReportAnalyser.appendSuspectedMods(this.cause, this.stacktrace));
+             p_71506_1_.append("Stacktrace:\n");
+             StackTraceElement[] astacktraceelement = this.stacktrace;
+             int i = astacktraceelement.length;

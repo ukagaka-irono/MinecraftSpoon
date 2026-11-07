@@ -39,12 +39,27 @@ at some.words.related.to.a.mod.MoreWords(MoreWords.java:123)
 いちばん上の行がゲームが止まった場所、いちばん下の行が処理の始まった場所です。`-- System Details --` の節の最後に
 ある `FML:` の行には、Spoon のバージョンと読み込まれたすべての Mod が載っています。
 
+新しい Forge と同じく、`-- Head --` の節の最初には原因らしい Mod（Suspected Mods）が載ります。スタックトレースに
+コードが出てくる Mod（Mixin でほかのクラスに組み込まれたコードも含みます）と、それが最初に出てくる行です。
+
+```
+-- Head --
+Suspected Mod: 
+	Example Mod (examplemod), Version: 1.0
+		Website: https://example.com/
+		at com.example.ExampleBlock.onBlockActivated(ExampleBlock.java:42)
+Stacktrace:
+```
+
+まずはここに載った Mod から調べてください。ただし、載った Mod がエラーを受け渡しただけのこともあるので、
+スタックトレースも読んでください。
+
 ### スタックトレースを読む
 
 次の順に当てはめてください。
 
- 1. スタックトレースに Mod の名前があれば、その Mod が原因である可能性が高いです。
-    複数の Mod が出てくる場合は、すべてに報告するか、名前からどれが原因かを考えてください。
+ 1. スタックトレースに Mod の名前があれば、その Mod が原因である可能性が高いです。原因らしい Mod の欄に、
+    その Mod が載っています。複数の Mod が出てくる場合は、すべてに報告するか、名前からどれが原因かを考えてください。
  2. `net.minecraft` のほかに `net.minecraftforge` や `cpw.mods.fml` しか見つからない場合は、Spoon か Forge 自体に
     問題がある可能性があります。Spoon は Forge のパッケージ名を残しているので、Spoon のコードも同じ名前で出てきます。
     どちらなのかは [Forge と比べて](#forge-と比べる)見分けてください。

@@ -38,12 +38,26 @@ at some.words.related.to.a.mod.MoreWords(MoreWords.java:123)
 The top line is where the game stopped and the bottom line is where it started. Its `-- System Details --` section
 ends with an `FML:` line that shows the Spoon version and every loaded mod.
 
+As in newer Forge versions, the `-- Head --` section starts with the suspected mods: every mod whose code appears in the
+stacktrace, including code that a mixin merged into another class, with the first line where it appears:
+
+```
+-- Head --
+Suspected Mod: 
+	Example Mod (examplemod), Version: 1.0
+		Website: https://example.com/
+		at com.example.ExampleBlock.onBlockActivated(ExampleBlock.java:42)
+Stacktrace:
+```
+
+Start with these mods, but read the stacktrace too: a listed mod may only have passed the error on.
+
 ### Analyzing a Stacktrace
 
 Follow these rules, in order:
 
- 1. If you can find the name of a mod in the stacktrace, that mod most likely caused the problem.
-    If several mods appear, report to all of them or work out from the names which one is at fault.
+ 1. If you can find the name of a mod in the stacktrace, that mod most likely caused the problem. The suspected mods
+    list them for you. If several mods appear, report to all of them or work out from the names which one is at fault.
  2. If you only find `net.minecraftforge` or `cpw.mods.fml` alongside `net.minecraft`, the problem may be in Spoon or in
     Forge itself. Spoon keeps Forge's package names, so its code shows up under the same names.
     [Compare with Forge](#comparing-with-forge) to tell them apart.

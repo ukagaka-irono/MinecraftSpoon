@@ -70,6 +70,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   It is a separate screen that opens in place of Forge's `GuiModList`, which Spoon keeps unchanged so mods that extend
   it, such as EnderCore, keep working.
 * **Faster startup:** mod discovery skips method bodies, and each loading phase logs `Spoon startup: ...` timings.
+* **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
+  mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
 * **Version check:** the title screen shows when a new Spoon version is out. At startup, Spoon reads
   [promotions_slim.json][Promotions] from its website, in the format Forge uses. While there is no stable release, the
   title screen also shows a beta warning.
