@@ -37,10 +37,10 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
     public void drawScreen(int p_73863_1_, int p_73863_2_, float p_73863_3_)
     {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRendererObj, String.format("The world %s contains pre-update modding data", saveName), this.width / 2, 50, 16777215);
-        this.drawCenteredString(this.fontRendererObj, String.format("There may be problems updating it to this version"), this.width / 2, 70, 16777215);
-        this.drawCenteredString(this.fontRendererObj, String.format("FML will save a zip to %s", zip.getName()), this.width / 2, 90, 16777215);
-        this.drawCenteredString(this.fontRendererObj, String.format("Do you wish to continue loading?"), this.width / 2, 110, 16777215);
+        this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.description", "The world %s contains pre-update modding data", saveName), this.width / 2, 50, 16777215);
+        this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.problems", "There may be problems updating it to this version"), this.width / 2, 70, 16777215);
+        this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.backup", "FML will save a zip to %s", zip.getName()), this.width / 2, 90, 16777215);
+        this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.confirm", "Do you wish to continue loading?"), this.width / 2, 110, 16777215);
         int k;
 
         for (k = 0; k < this.buttonList.size(); ++k)

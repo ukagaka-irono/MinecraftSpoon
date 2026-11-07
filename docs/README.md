@@ -72,6 +72,9 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 * **Faster startup:** mod discovery skips method bodies, and each loading phase logs `Spoon startup: ...` timings.
 * **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
   mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
+* **Japanese translation:** the config screens, Spoon's settings, the `/forge` command, the **Mods** and
+  **Mod Options...** buttons and FML's error screens, such as the one for missing mods, are translated into Japanese.
+  The error screens can open before the language files are loaded, and then show English.
 * **Version check:** the title screen shows when a new Spoon version is out. At startup, Spoon reads
   [promotions_slim.json][Promotions] from its website, in the format Forge uses. While there is no stable release, the
   title screen also shows a beta warning.
