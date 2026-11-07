@@ -35,8 +35,9 @@ public class ForgeVersion
     private static final String updateJsonURL = "https://ukagaka-irono.github.io/minecraft-spoon/promotions_slim.json";
     private static final int timeoutMillis = 5000;
 
-    private static Status status = PENDING;
-    private static String target = null;
+    // Written by the version check thread and read by the title screen
+    private static volatile Status status = PENDING;
+    private static volatile String target = null;
 
     public static int getMajorVersion()
     {
@@ -104,6 +105,7 @@ public class ForgeVersion
                     Map<String, Object> json = new Gson().fromJson(data, Map.class);
                     //String homepage = (String)json.get("homepage");
                     checkPromos((Map<String, String>)json.get("promos"));
+                    FMLLog.info("Spoon version check: %s%s", status, target != null ? ", new version " + target : "");
                 }
                 catch (Exception e)
                 {
