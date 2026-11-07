@@ -14,13 +14,16 @@ import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import net.minecraft.launchwrapper.Launch;
+
 import org.apache.logging.log4j.Level;
 
 import cpw.mods.fml.common.FMLLog;
 
 /**
- * Zips a world folder into the backups folder on a thread of its own, as the Make Backup button of newer Minecraft
- * versions does: the backup is backups/&lt;date&gt;_&lt;world folder&gt;.zip, with the world folder inside.
+ * Zips a world folder into the backups folder, as the Make Backup button of newer Minecraft versions does: the backup
+ * is backups/&lt;date&gt;_&lt;world folder&gt;.zip, with the world folder inside. The Backup button of the world selection
+ * screen runs it on a thread of its own, and FML's backup of a world with missing mods on the server's thread.
  */
 public final class WorldBackup implements Runnable
 {
@@ -47,6 +50,30 @@ public final class WorldBackup implements Runnable
     {
         this.worldDir = worldDir;
         this.backupsDir = backupsDir;
+    }
+
+    /**
+     * Returns the backups folder of the game folder, where newer Minecraft versions keep their backups too.
+     */
+    public static File getBackupsDir()
+    {
+        return new File(Launch.minecraftHome, "backups");
+    }
+
+    /**
+     * Backs up a world folder into the backups folder on this thread.
+     *
+     * @return the zip file
+     */
+    public static File backup(File worldDir) throws IOException
+    {
+        WorldBackup backup = new WorldBackup(worldDir, getBackupsDir());
+        backup.run();
+        if (backup.state != State.DONE)
+        {
+            throw backup.error instanceof IOException ? (IOException)backup.error : new IOException(backup.error);
+        }
+        return backup.backupFile;
     }
 
     /**

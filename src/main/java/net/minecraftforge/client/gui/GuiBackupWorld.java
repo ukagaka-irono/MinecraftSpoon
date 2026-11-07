@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.WorldBackup;
 
 import com.google.common.base.Strings;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.FileOpener;
 
 /**
@@ -84,11 +85,6 @@ public class GuiBackupWorld extends GuiScreen
         }
     }
 
-    private File backupsDir()
-    {
-        return new File(this.mc.mcDataDir, "backups");
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void initGui()
@@ -97,7 +93,7 @@ public class GuiBackupWorld extends GuiScreen
         {
             // Closes the region files still open from the last world played, as deleting a world does
             this.mc.getSaveLoader().flushCache();
-            this.backup = WorldBackup.start(new File(new File(this.mc.mcDataDir, "saves"), this.worldFolder), backupsDir());
+            this.backup = WorldBackup.start(new File(FMLClientHandler.instance().getSavesDirectory(), this.worldFolder), WorldBackup.getBackupsDir());
         }
         this.shownState = this.backup.getState();
         this.buttonList.clear();
@@ -142,7 +138,7 @@ public class GuiBackupWorld extends GuiScreen
         }
         if (button.id == BUTTON_OPEN_FOLDER)
         {
-            FileOpener.open(backupsDir());
+            FileOpener.open(WorldBackup.getBackupsDir());
         }
         else if (button.id == BUTTON_DONE)
         {

@@ -669,7 +669,7 @@ public class GameData {
             String text = "Forge Mod Loader detected missing blocks/items.\n\n" +
                     "There are "+defaulted.size()+" missing blocks and items in this save.\n" +
                     "If you continue the missing blocks/items will get removed.\n" +
-                    "A world backup will be automatically created in your saves directory.\n\n" +
+                    "A world backup will be automatically created in your backups directory.\n\n" +
                     "Missing Blocks/Items:\n";
 
             for (String s : defaulted) text += s + "\n";

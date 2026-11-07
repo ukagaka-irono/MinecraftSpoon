@@ -84,7 +84,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   folder and to copy the report. The game exits when the window is closed.
 * **World backups:** as in newer Minecraft versions, the world selection screen has a **Backup** button. It zips the
   selected world into the `backups` folder as `<date>_<world folder>.zip`, showing its progress, and the screen that
-  follows has an **Open Backups Folder** button.
+  follows has an **Open Backups Folder** button. FML's own backup of a world whose mods are missing goes to the same
+  folder in the same form, rather than among the worlds in `saves`.
 * **Screenshots without a freeze:** as in newer Minecraft versions, the screenshot key reads the screen at once and
   writes the PNG file on another thread, so the game no longer stops for a moment. The chat message comes once the file
   is written.

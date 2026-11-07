@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.world.WorldSettings;
+import net.minecraftforge.common.util.WorldBackup;
 
 import org.apache.logging.log4j.Level;
 
@@ -30,7 +31,8 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
         this.parent = parent;
         this.dirName = dirName;
         this.saveName = saveName;
-        this.zip = new File(FMLClientHandler.instance().getClient().mcDataDir,String.format("%s-%2$td%2$tm%2$ty%2$tH%2$tM%2$tS.zip", dirName, System.currentTimeMillis()));
+        // Spoon: in the backups folder with the other backups, rather than in the game folder itself
+        this.zip = new File(WorldBackup.getBackupsDir(),String.format("%s-%2$td%2$tm%2$ty%2$tH%2$tM%2$tS.zip", dirName, System.currentTimeMillis()));
     }
 
     @Override
@@ -39,7 +41,7 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.description", "The world %s contains pre-update modding data", saveName), this.width / 2, 50, 16777215);
         this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.problems", "There may be problems updating it to this version"), this.width / 2, 70, 16777215);
-        this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.backup", "FML will save a zip to %s", zip.getName()), this.width / 2, 90, 16777215);
+        this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.backup", "FML will save a zip to %s", zip.getParentFile().getName() + "/" + zip.getName()), this.width / 2, 90, 16777215);
         this.drawCenteredString(this.fontRendererObj, FMLScreenText.format("fml.screen.oldSave.confirm", "Do you wish to continue loading?"), this.width / 2, 110, 16777215);
         int k;
 
@@ -69,6 +71,7 @@ public class GuiOldSaveLoadConfirm extends GuiYesNo implements GuiYesNoCallback 
                 String skip = System.getProperty("fml.doNotBackup");
                 if (skip == null || !"true".equals(skip))
                 {
+                    zip.getParentFile().mkdirs();
                     ZipperUtil.zip(new File(FMLClientHandler.instance().getSavesDir(), dirName), zip);
                 }
                 else

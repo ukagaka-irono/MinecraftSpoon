@@ -11,6 +11,8 @@ import java.util.LinkedList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import net.minecraftforge.common.util.WorldBackup;
+
 import org.apache.logging.log4j.Level;
 
 import com.google.common.io.Files;
@@ -74,12 +76,11 @@ public class ZipperUtil {
 
     public static void backupWorld(String dirName) throws IOException
     {
-        File dstFolder = FMLCommonHandler.instance().getSavesDirectory();
-        File zip = new File(dstFolder, String.format("%s-%2$tY%2$tm%2$td-%2$tH%2$tM%2$tS.zip", dirName, System.currentTimeMillis()));
-
+        // Spoon: into the backups folder rather than among the worlds, named and laid out as by the Backup button
+        File zip;
         try
         {
-            ZipperUtil.zip(new File(dstFolder, dirName), zip);
+            zip = WorldBackup.backup(new File(FMLCommonHandler.instance().getSavesDirectory(), dirName));
         }
         catch (IOException e)
         {
