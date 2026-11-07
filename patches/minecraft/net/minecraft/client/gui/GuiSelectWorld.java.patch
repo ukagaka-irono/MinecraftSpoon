@@ -1,0 +1,21 @@
+--- ../src-base/minecraft/net/minecraft/client/gui/GuiSelectWorld.java
++++ ../src-work/minecraft/net/minecraft/client/gui/GuiSelectWorld.java
+@@ -108,6 +108,7 @@
+         this.field_146642_y.field_146124_l = false;
+         this.field_146630_A.field_146124_l = false;
+         this.field_146631_B.field_146124_l = false;
++        net.minecraftforge.client.gui.GuiBackupWorld.addButton(this, this.field_146292_n, this.field_146630_A);
+     }
+ 
+     protected void func_146284_a(GuiButton p_146284_1_)
+@@ -150,6 +151,10 @@
+                 guicreateworld.func_146318_a(worldinfo);
+                 this.field_146297_k.func_147108_a(guicreateworld);
+             }
++            else if (p_146284_1_.field_146127_k == net.minecraftforge.client.gui.GuiBackupWorld.BUTTON_ID)
++            {
++                this.field_146297_k.func_147108_a(new net.minecraftforge.client.gui.GuiBackupWorld(this, this.func_146621_a(this.field_146640_r), this.func_146614_d(this.field_146640_r)));
++            }
+             else
+             {
+                 this.field_146638_t.func_148147_a(p_146284_1_);

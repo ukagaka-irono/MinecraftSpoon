@@ -82,6 +82,9 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 * **Crash window:** Minecraft 1.7.10 closes its window without a word when it crashes. Spoon opens a window instead,
   with the description of the crash, the suspected mods and the crash report, and buttons to open the report or its
   folder and to copy the report. The game exits when the window is closed.
+* **World backups:** as in newer Minecraft versions, the world selection screen has a **Backup** button. It zips the
+  selected world into the `backups` folder as `<date>_<world folder>.zip`, showing its progress, and the screen that
+  follows has an **Open Backups Folder** button.
 * **Japanese translation:** the config screens, Spoon's settings, the `/forge` command, the **Mods** and
   **Mod Options...** buttons and FML's error screens, such as the one for missing mods, are translated into Japanese.
   The error screens can open before the language files are loaded, and then show English.

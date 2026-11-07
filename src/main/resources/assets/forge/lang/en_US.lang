@@ -22,6 +22,11 @@ spoon.crash.openFolder=Open Folder
 spoon.crash.copy=Copy Crash Report
 spoon.crash.copied=Copied
 spoon.crash.close=Close
+spoon.backup.button=Backup
+spoon.backup.title=Backing up "%s"
+spoon.backup.done=Backed up "%s"
+spoon.backup.failed=Couldn't back up "%s"
+spoon.backup.openFolder=Open Backups Folder
 
 forge.configgui.forgeConfigTitle=Spoon Configuration
 forge.configgui.ctgy.forgeGeneralConfig.tooltip=This is where you can edit the settings contained in forge.cfg.
