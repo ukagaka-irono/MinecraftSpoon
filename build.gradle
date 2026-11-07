@@ -76,6 +76,13 @@ tasks.matching { it.name in ['generateProjectClean', 'generateProjectForge'] }.a
     }
 }
 
+// genPatches diffs eclipse/Forge against build/tmp/clean.jar (the FML-patched sources with MCP names), but
+// ForgeGradle only builds that jar during setupForge, so genPatches fails once build/ is gone. Rebuild it
+// from fml/patches every time; that also keeps the base in step when fml/patches changes.
+tasks.matching { it.name == 'extractRangeClean' }.all {
+    dependsOn 'remapCleanJar'
+}
+
 // The changelog used to come from Forge's Jenkins server, which no longer exists.
 // Ship the git history of this repository since the last Forge commit instead.
 tasks.matching { it.name == 'createChangelog' }.all { task ->
