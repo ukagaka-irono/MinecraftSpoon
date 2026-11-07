@@ -28,6 +28,7 @@ launcher, and `minecraft/logs` (or `.minecraft/logs`) inside the instance folder
   every level. **This is the log to look at and to attach to a report.**
 * `latest.log` only holds Minecraft's own messages.
 * Crashes also write a crash report to the `crash-reports` folder, such as `crash-2026-01-01_12.00.00-client.txt`.
+  On the client, Spoon also opens a window with the suspected mods and buttons to open or copy the crash report.
 
 A crash report starts with a description and a stacktrace: lines like
 

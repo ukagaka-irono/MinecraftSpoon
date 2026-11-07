@@ -79,6 +79,9 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   first. Time that belongs to no single mod, such as loading textures, is not counted.
 * **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
   mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
+* **Crash window:** Minecraft 1.7.10 closes its window without a word when it crashes. Spoon opens a window instead,
+  with the description of the crash, the suspected mods and the crash report, and buttons to open the report or its
+  folder and to copy the report. The game exits when the window is closed.
 * **Japanese translation:** the config screens, Spoon's settings, the `/forge` command, the **Mods** and
   **Mod Options...** buttons and FML's error screens, such as the one for missing mods, are translated into Japanese.
   The error screens can open before the language files are loaded, and then show English.
@@ -95,10 +98,11 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 |-----------------------------|------------------------------------|---------|-------------|
 | IME Control                 | `imeControl` (`general`)           | `true`  | Windows only. Set it to `false` to stop Spoon from detaching the IME. |
 | Disable Spoon Version Check | `disableVersionCheck` (`general`)  | `false` | Set it to `true` to stop Spoon from checking for a new version at startup. |
+| Crash Window                | `crashWindow` (`general`)          | `true`  | Client only. Set it to `false` to exit at once on a crash, without the crash window. |
 
 To change a setting in game, open **Mods** on the title screen, select Spoon and choose
-**Config > General Settings**. A change to IME Control made from the title screen applies at once; the version check
-setting applies from the next start.
+**Config > General Settings**. A change to IME Control or Crash Window made from the title screen applies at once; the
+version check setting applies from the next start.
 
 # Creating Mods
 

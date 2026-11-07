@@ -485,6 +485,14 @@ public class SplashProgress
         lock.unlock();
     }
 
+    /**
+     * Whether the splash screen is still drawing on its own thread, which then holds the GL context of the game window.
+     */
+    public static boolean isRunning()
+    {
+        return enabled && thread != null && thread.isAlive() && !done;
+    }
+
     public static void finish()
     {
         if(!enabled) return;

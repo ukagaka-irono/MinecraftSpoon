@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -45,29 +46,52 @@ public final class CrashReportAnalyser
     {
         try
         {
-            List<ModContainer> mods = Loader.instance().getModList();
-            if (mods.isEmpty())
-            {
-                return "";
-            }
-            ListMultimap<File, ModContainer> modsBySource = cacheModList(mods);
-            Map<ModContainer, String> suspected = new LinkedHashMap<ModContainer, String>();
-            Set<Throwable> seen = Collections.newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
-            for (Throwable t = throwable; t != null && seen.add(t); t = t.getCause())
-            {
-                scanStacktrace(t.getStackTrace(), modsBySource, suspected);
-            }
-            if (uncategorizedStackTrace != null)
-            {
-                scanStacktrace(uncategorizedStackTrace, modsBySource, suspected);
-            }
-            return buildSuspectedModsSection(suspected);
+            Map<ModContainer, String> suspected = scanForSuspectedMods(throwable, uncategorizedStackTrace);
+            return suspected != null ? buildSuspectedModsSection(suspected) : "";
         }
         catch (Throwable t)
         {
             FMLLog.log(Level.ERROR, t, "Failed to append suspected mod(s) to crash report!");
             return "";
         }
+    }
+
+    /**
+     * Returns the same mods as {@link #appendSuspectedMods}, in the same order, or null while the mods are not known yet.
+     */
+    public static List<ModContainer> findSuspectedMods(Throwable throwable, StackTraceElement[] uncategorizedStackTrace)
+    {
+        try
+        {
+            Map<ModContainer, String> suspected = scanForSuspectedMods(throwable, uncategorizedStackTrace);
+            return suspected != null ? new ArrayList<ModContainer>(suspected.keySet()) : null;
+        }
+        catch (Throwable t)
+        {
+            FMLLog.log(Level.ERROR, t, "Failed to find the suspected mod(s) of a crash!");
+            return null;
+        }
+    }
+
+    private static Map<ModContainer, String> scanForSuspectedMods(Throwable throwable, StackTraceElement[] uncategorizedStackTrace)
+    {
+        List<ModContainer> mods = Loader.instance().getModList();
+        if (mods.isEmpty())
+        {
+            return null;
+        }
+        ListMultimap<File, ModContainer> modsBySource = cacheModList(mods);
+        Map<ModContainer, String> suspected = new LinkedHashMap<ModContainer, String>();
+        Set<Throwable> seen = Collections.newSetFromMap(new IdentityHashMap<Throwable, Boolean>());
+        for (Throwable t = throwable; t != null && seen.add(t); t = t.getCause())
+        {
+            scanStacktrace(t.getStackTrace(), modsBySource, suspected);
+        }
+        if (uncategorizedStackTrace != null)
+        {
+            scanStacktrace(uncategorizedStackTrace, modsBySource, suspected);
+        }
+        return suspected;
     }
 
     private static ListMultimap<File, ModContainer> cacheModList(List<ModContainer> mods)

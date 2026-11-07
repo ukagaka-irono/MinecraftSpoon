@@ -69,6 +69,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static boolean shouldSortRecipies = true;
     public static boolean disableVersionCheck = false;
     public static boolean imeControl = true;
+    public static boolean crashWindow = true;
     public static int defaultSpawnFuzz = 20;
     public static boolean defaultHasSpawnFuzz = true;
 
@@ -234,6 +235,12 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
                 "Windows only. Detach the IME from the game window while no text field is focused, so movement keys like WASD work with a CJK IME turned on.");
         prop.setLanguageKey("forge.configgui.imeControl");
         imeControl = prop.getBoolean(true);
+        propOrder.add(prop.getName());
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "crashWindow", true,
+                "Client only. Show a window with the suspected mods and the crash report when the game crashes. The game exits when the window is closed.");
+        prop.setLanguageKey("forge.configgui.crashWindow");
+        crashWindow = prop.getBoolean(true);
         propOrder.add(prop.getName());
 
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
