@@ -125,9 +125,11 @@ MacOS/Linux:          export JAVA_HOME=/path/to/jdk8
 | ワークスペースからクライアントを起動する（`-PmcUsername=<名前>` も指定できる） | `.\gradlew.bat runClient` | `./gradlew runClient` |
 
 `eclipse/Forge` の Minecraft のクラスを変更したら、`gradlew genPatches` でパッチを作り直してください。
-コミットする前に結果を確認してください。このフォークは、触る必要のなかったパッチに MCP の名前
-（たとえば `WorldType.DEFAULT_1_1`）を残すことがあります。変更するつもりだったパッチだけを残し、ほかは git で
-元に戻してください。
+書き換わるのは `patches/minecraft` だけです。差分の基準には FML のパッチを当てたソースを使い、このソースは毎回
+`fml/patches` から作り直されます。コミットする前に結果を確認してください。このフォークは、何も変更していない
+ワークスペースでも、触る必要のなかったいくつかのパッチ（`Minecraft`、`GuiChat`、`WorldGenDungeons`、
+`GenLayerBiome`）を書き換えます。MCP の名前（たとえば `WorldType.DEFAULT_1_1`）が残ったり、逆コンパイラーの
+ラベルや行番号が変わったりします。変更するつもりだったパッチだけを残し、ほかは git で元に戻してください。
 
 Eclipse を使う場合は、Eclipse のワークスペースをリポジトリ内の `eclipse` フォルダーにしてください。
 

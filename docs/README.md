@@ -121,9 +121,12 @@ MacOS/Linux:          export JAVA_HOME=/path/to/jdk8
 | Build a Prism Launcher instance (`build/distributions/spoon-...-prism.zip`) | `.\gradlew.bat packagePrism` | `./gradlew packagePrism` |
 | Run the client from the workspace (optionally with `-PmcUsername=<name>`) | `.\gradlew.bat runClient` | `./gradlew runClient` |
 
-After changing Minecraft classes in `eclipse/Forge`, regenerate the patches with `gradlew genPatches`.
-Review the result before committing: the fork sometimes leaves MCP names (for example `WorldType.DEFAULT_1_1`) in
-patches it did not need to touch. Keep only the patches you meant to change and restore the others with git.
+After changing Minecraft classes in `eclipse/Forge`, regenerate the patches with `gradlew genPatches`. It only writes
+`patches/minecraft`, diffing against the sources with the FML patches applied, which it rebuilds from `fml/patches` each
+time. Review the result before committing: even on an unchanged workspace, the fork rewrites a few patches it did not
+need to touch (`Minecraft`, `GuiChat`, `WorldGenDungeons` and `GenLayerBiome`) with MCP names such as
+`WorldType.DEFAULT_1_1`, other decompiler labels or shifted line numbers. Keep only the patches you meant to change and
+restore the others with git.
 
 To use Eclipse, point your Eclipse workspace at the `eclipse` folder inside the repo.
 
