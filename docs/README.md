@@ -80,7 +80,10 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   The error screens can open before the language files are loaded, and then show English.
 * **Version check:** the title screen shows when a new Spoon version is out. At startup, Spoon reads
   [promotions_slim.json][Promotions] from its website, in the format Forge uses. While there is no stable release, the
-  title screen also shows a beta warning.
+  title screen also shows a beta warning. Other mods can draw over the title screen, so the mod list also shows an
+  **Update** badge on Spoon, and the new version with a link to the releases page in its details.
+  These notices use Spoon's own language keys (`spoon.update.*`), so resource packs that replace the text of Forge's
+  update notice do not change them. The result is logged as `Spoon version check: ...`.
 
 ## Settings
 

@@ -1,6 +1,6 @@
-forge.update.newversion=Spoon の新しいバージョンがあります: %s
-forge.update.beta.1=%s警告: %sSpoon ベータ版
-forge.update.beta.2=重大な問題が起きる可能性があります。報告の前に確認してください。
+spoon.update.newversion=Spoon の新しいバージョンがあります: %s
+spoon.update.beta.1=%s警告: %sSpoon ベータ版
+spoon.update.beta.2=重大な問題が起きる可能性があります。報告の前に確認してください。
 forge.configgui.forgeConfigTitle=Spoon の設定
 forge.configgui.ctgy.forgeGeneralConfig.tooltip=forge.cfg の設定を編集します。
 forge.configgui.ctgy.forgeGeneralConfig=一般設定

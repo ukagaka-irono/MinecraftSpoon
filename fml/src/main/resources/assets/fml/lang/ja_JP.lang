@@ -20,6 +20,7 @@ fml.menu.mods.noMetadata=Mod の情報が見つかりません。Mod の作者�
 fml.menu.mods.badge.core=コア
 fml.menu.mods.badge.disabled=無効
 fml.menu.mods.badge.error=エラー
+fml.menu.mods.badge.update=更新あり
 fml.menu.mods.showing.one=1 件の Mod を表示中
 fml.menu.mods.sort.az=A-Z
 fml.menu.mods.sort.za=Z-A
