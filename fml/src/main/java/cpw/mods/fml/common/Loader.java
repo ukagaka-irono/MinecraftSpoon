@@ -745,6 +745,7 @@ public class Loader
         progressBar.step("Finishing up");
         modController.transition(LoaderState.AVAILABLE, false);
         modController.distributeStateMessage(LoaderState.AVAILABLE);
+        ModStartupTimes.finish(modController.getActiveModList());
         GameData.freezeData();
         // Dump the custom registry data map, if necessary
         GameData.dumpRegistry(minecraftDir);

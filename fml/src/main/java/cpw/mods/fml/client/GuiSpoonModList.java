@@ -64,6 +64,7 @@ import cpw.mods.fml.common.LoaderState.ModState;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.ModConfigFiles;
 import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.ModStartupTimes;
 
 /**
  * The mod list: a searchable list of mods on the left and the selected mod's details on the right.
@@ -140,7 +141,7 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
     private final ArrayList<ModContainer> visibleMods = new ArrayList<ModContainer>();
     private ModContainer selectedMod;
     private String pendingLink;
-    private boolean sortDescending;
+    private SortOrder sortOrder = SortOrder.NAME_ASCENDING;
     private int dragTarget = DRAG_NONE;
     private int paneWidth;
     private int detailsLeft;
@@ -159,6 +160,28 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
             this.texture = texture;
             this.width = width;
             this.height = height;
+        }
+    }
+
+    /** The orders the sort button cycles through, with the keys of its label and tooltip. */
+    private static enum SortOrder
+    {
+        NAME_ASCENDING("fml.menu.mods.sort.az", "fml.menu.mods.sort.ascending"),
+        NAME_DESCENDING("fml.menu.mods.sort.za", "fml.menu.mods.sort.descending"),
+        STARTUP_TIME("fml.menu.mods.sort.time", "fml.menu.mods.sort.startupTime");
+
+        final String labelKey;
+        final String tooltipKey;
+
+        private SortOrder(String labelKey, String tooltipKey)
+        {
+            this.labelKey = labelKey;
+            this.tooltipKey = tooltipKey;
+        }
+
+        SortOrder next()
+        {
+            return values()[(ordinal() + 1) % values().length];
         }
     }
 
@@ -317,7 +340,7 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
                     this.mc.displayGuiScreen(this.mainMenu);
                     return;
                 case BUTTON_SORT:
-                    this.sortDescending = !this.sortDescending;
+                    this.sortOrder = this.sortOrder.next();
                     refreshMods();
                     return;
                 case BUTTON_WEBSITE:
@@ -446,7 +469,7 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
     }
 
     /**
-     * Filters the mods by the search text and sorts them by name. Child mods are listed on their own only when they match a search.
+     * Filters the mods by the search text and sorts them in the chosen order. Child mods are listed on their own only when they match a search.
      */
     private void refreshMods()
     {
@@ -469,16 +492,24 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
                 }
             }
         }
-        Collections.sort(this.visibleMods, new Comparator<ModContainer>()
+        if (this.sortOrder == SortOrder.STARTUP_TIME)
         {
-            @Override
-            public int compare(ModContainer a, ModContainer b)
+            Collections.sort(this.visibleMods, ModStartupTimes.SLOWEST_FIRST);
+        }
+        else
+        {
+            final boolean descending = this.sortOrder == SortOrder.NAME_DESCENDING;
+            Collections.sort(this.visibleMods, new Comparator<ModContainer>()
             {
-                int order = a.getName().compareToIgnoreCase(b.getName());
-                return sortDescending ? -order : order;
-            }
-        });
-        this.sortButton.displayString = I18n.format(this.sortDescending ? "fml.menu.mods.sort.za" : "fml.menu.mods.sort.az");
+                @Override
+                public int compare(ModContainer a, ModContainer b)
+                {
+                    int order = a.getName().compareToIgnoreCase(b.getName());
+                    return descending ? -order : order;
+                }
+            });
+        }
+        this.sortButton.displayString = I18n.format(this.sortOrder.labelKey);
         // A new list starts scrolled to the top
         this.modList = new GuiSlotSpoonModList(this, this.visibleMods, this.paneWidth, LIST_TOP, this.listBottom, MARGIN);
         this.modList.registerScrollButtons(this.buttonList, BUTTON_MODS_LIST_UP, BUTTON_MODS_LIST_DOWN);
@@ -567,7 +598,31 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
         addWrapped(lines, I18n.format("fml.menu.mods.modId", mod.getModId()), 0, wrap, COLOR_SECONDARY, null);
         String state = Loader.instance().getModState(mod).name().toLowerCase(Locale.ROOT);
         addWrapped(lines, I18n.format("fml.menu.mods.state", I18n.format("fml.menu.mods.state." + state)), 0, wrap, COLOR_SECONDARY, null);
+        if (ModStartupTimes.has(mod))
+        {
+            addWrapped(lines, I18n.format("fml.menu.mods.startupTime", formatMillis(ModStartupTimes.totalMillis(mod))), 0, wrap, COLOR_SECONDARY, null);
+            for (ModStartupTimes.Phase phase : ModStartupTimes.Phase.values())
+            {
+                long millis = ModStartupTimes.millis(mod, phase);
+                if (millis > 0)
+                {
+                    addWrapped(lines, I18n.format("fml.menu.mods.startupTime." + phase.name().toLowerCase(Locale.ROOT), formatMillis(millis)), INDENT, wrap - INDENT, COLOR_SECONDARY, null);
+                }
+            }
+        }
         return lines;
+    }
+
+    boolean isSortedByStartupTime()
+    {
+        return this.sortOrder == SortOrder.STARTUP_TIME;
+    }
+
+    /** Formats a time in milliseconds below a second, and in seconds with two decimals from a second. */
+    static String formatMillis(long millis)
+    {
+        return millis < 1000 ? I18n.format("fml.menu.mods.time.ms", millis)
+                : I18n.format("fml.menu.mods.time.s", String.format(Locale.ROOT, "%.2f", millis / 1000.0));
     }
 
     /**
@@ -664,7 +719,7 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
 
         if (this.sortHover.checkHover(mouseX, mouseY))
         {
-            this.func_146283_a(Arrays.asList(I18n.format(this.sortDescending ? "fml.menu.mods.sort.descending" : "fml.menu.mods.sort.ascending")), mouseX, mouseY);
+            this.func_146283_a(Arrays.asList(I18n.format(this.sortOrder.tooltipKey)), mouseX, mouseY);
         }
     }
 

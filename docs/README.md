@@ -72,7 +72,11 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   Forge's `GuiIngameModOptions`, which Forge 1.7.10 never finished.
   For a mod without a config screen, the button becomes **Config File** or **Config Folder** and opens the config
   files the mod loaded through Forge's `Configuration`, in the program the system opens them with.
-* **Faster startup:** mod discovery skips method bodies, and each loading phase logs `Spoon startup: ...` timings.
+* **Faster startup and startup times:** mod discovery skips method bodies, and each loading phase logs
+  `Spoon startup: ...` timings. Spoon also measures how long each mod spends in its own loading events (construction,
+  pre-initialization, initialization, post-initialization and others), and logs the 10 slowest mods when loading ends.
+  The mod list shows each mod's time in its details, and its sort button can sort the mods by startup time, slowest
+  first. Time that belongs to no single mod, such as loading textures, is not counted.
 * **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
   mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
 * **Japanese translation:** the config screens, Spoon's settings, the `/forge` command, the **Mods** and

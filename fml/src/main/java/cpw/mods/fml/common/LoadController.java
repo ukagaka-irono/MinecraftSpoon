@@ -211,7 +211,9 @@ public class LoadController
         stateEvent.applyModContainer(activeContainer());
         ThreadContext.put("mod", modId);
         FMLLog.log(modId, Level.TRACE, "Sending event %s to mod %s", stateEvent.getEventType(), modId);
+        long start = System.nanoTime();
         eventChannels.get(modId).post(stateEvent);
+        ModStartupTimes.record(modId, stateEvent, System.nanoTime() - start);
         FMLLog.log(modId, Level.TRACE, "Sent event %s to mod %s", stateEvent.getEventType(), modId);
         ThreadContext.remove("mod");
         activeContainer = null;
