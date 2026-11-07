@@ -94,6 +94,8 @@ public class Configuration
     {
         this.file = file;
         this.definedConfigVersion = configVersion;
+        // Lets the mod list open this file for a mod that has no config screen
+        cpw.mods.fml.common.ModConfigFiles.record(file);
         String basePath = ((File)(FMLInjectionData.data()[6])).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
         String path = file.getAbsolutePath().replace(File.separatorChar, '/').replace("/./", "/").replace(basePath, "");
         if (PARENT != null)

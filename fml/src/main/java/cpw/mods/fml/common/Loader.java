@@ -826,6 +826,14 @@ public class Loader
         return modController != null ? modController.activeContainer() : null;
     }
 
+    /**
+     * Returns the mod being loaded now without creating the Loader, for code that also runs before FML starts.
+     */
+    static ModContainer activeModContainerIfLoading()
+    {
+        return instance != null ? instance.activeModContainer() : null;
+    }
+
     public boolean isInState(LoaderState state)
     {
         return modController.isInState(state);
