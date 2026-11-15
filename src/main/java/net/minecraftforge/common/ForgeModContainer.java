@@ -72,6 +72,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static boolean crashWindow = true;
     public static boolean startupNotification = true;
     public static boolean memoryWarning = true;
+    public static boolean fastLanguageSwitch = true;
     public static int defaultSpawnFuzz = 20;
     public static boolean defaultHasSpawnFuzz = true;
 
@@ -255,6 +256,12 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
                 "Client only. Warn on the title screen when the memory given to Java looks too small for the mods loaded.");
         prop.setLanguageKey("forge.configgui.memoryWarning");
         memoryWarning = prop.getBoolean(true);
+        propOrder.add(prop.getName());
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "fastLanguageSwitch", true,
+                "Client only. When the language changes, reload only the language files rather than every resource. Set it to false if a mod shows the old language until a restart.");
+        prop.setLanguageKey("forge.configgui.fastLanguageSwitch");
+        fastLanguageSwitch = prop.getBoolean(true);
         propOrder.add(prop.getName());
 
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);

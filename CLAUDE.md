@@ -125,7 +125,7 @@ EOF
   - `ForgeModContainer.syncConfig` に書く。
   - 言語キーは `forge.configgui.<名前>` と `.tooltip`。
   - README の設定の表に、英語と日本語の両方で書く。
-  - 今ある Spoon の設定は `imeControl`、`disableVersionCheck`、`crashWindow`、`startupNotification`、`memoryWarning` の 5 つ。
+  - 今ある Spoon の設定は `imeControl`、`disableVersionCheck`、`crashWindow`、`startupNotification`、`memoryWarning`、`fastLanguageSwitch` の 6 つ。
 - **ファイルやフォルダーを開くとき:** `cpw.mods.fml.client.FileOpener.open(File)` を使う。
 - **ログ:** 先頭に `Spoon …:` を付ける（`Spoon startup:`、`Spoon version check:`、`Spoon crash window:`、`Spoon world backup:` など）。
 - **日本語の言い回し:**
@@ -206,6 +206,7 @@ N を新しい版の番号とする。
 | ブランド表示 | `src/main/resources/fmlbranding.properties`、`FMLCommonHandler` |
 | Realms ボタンの代わりの「Mod」ボタン | `GuiMainMenu.java.patch` |
 | Windows の IME 対応 | `net.minecraftforge.client.ime.IMEHandler`（`ForgeModContainer` で登録する。看板のキャレットの位置は `TileEntitySignRenderer.java.patch` から渡す） |
+| 速い言語の切り替え | `net.minecraftforge.client.LanguageSwitch`、`GuiLanguage.java.patch`（設定は `fastLanguageSwitch`） |
 | チャットのコピー（Ctrl+クリック） | `net.minecraftforge.client.ChatCopy`、`GuiChat.java.patch` |
 | 看板のカーソル | `GuiEditSign.java.patch` |
 | 全角英数字の幅 | `FontRenderer.java.patch` |

@@ -61,6 +61,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
     Japanese, Chinese or Korean IME turned on.
   * Text committed by an IME reaches chat, signs and other text fields.
   * The IME composition and candidate windows open at the caret.
+* **Fast language switch:** changing the language reloads only the language files, in under a second, rather than
+  every texture, model and sound, which took 14 seconds with 88 mods and 49 seconds in a 276-mod pack.
 * **Copying chat:** with the chat open, Ctrl+click a line (Cmd+click on macOS) to copy its whole message to the
   clipboard, such as coordinates or an error. A long message drawn on several lines is copied whole.
 * **Signs:** a movable cursor (arrow keys, Home/End, Delete) so text can be inserted mid-line, and a line only accepts
@@ -113,6 +115,7 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 | Crash Window                | `crashWindow` (`general`)          | `true`  | Client only. Set it to `false` to exit at once on a crash, without the crash window. |
 | Startup Notification        | `startupNotification` (`general`)  | `true`  | Windows only. Set it to `false` to stop Spoon from flashing the taskbar button when loading is done. |
 | Memory Warning              | `memoryWarning` (`general`)        | `true`  | Client only. Set it to `false` to hide the memory warning from the title screen. |
+| Fast Language Switch        | `fastLanguageSwitch` (`general`)   | `true`  | Client only. Set it to `false` to reload every resource when the language changes, as Minecraft does, if a mod shows the old language until a restart. |
 
 To change a setting in game, open **Mods** on the title screen, select Spoon and choose
 **Config > General Settings**. A change to IME Control or Crash Window made from the title screen applies at once; the
