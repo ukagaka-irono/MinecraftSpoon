@@ -130,15 +130,7 @@ public class FMLNetworkHandler
     }
     public static String checkModList(Map<String,String> listData, Side side)
     {
-        List<ModContainer> rejects = Lists.newArrayList();
-        for (Entry<ModContainer, NetworkModHolder> networkMod : NetworkRegistry.INSTANCE.registry().entrySet())
-        {
-            boolean result = networkMod.getValue().check(listData, side);
-            if (!result)
-            {
-                rejects.add(networkMod.getKey());
-            }
-        }
+        List<ModContainer> rejects = rejectedMods(listData, side);
         if (rejects.isEmpty())
         {
             return null;
@@ -149,6 +141,24 @@ public class FMLNetworkHandler
             // Spoon: a message a player can act on, rather than "Mod rejections [FMLMod:examplemod{1.2.3}]"
             return ModListRejection.message(rejects, listData, side);
         }
+    }
+
+    /**
+     * Returns the mods of this side that do not accept the mod list of the other side, without logging, as the server
+     * list asks it while the mouse is over a server.
+     */
+    public static List<ModContainer> rejectedMods(Map<String,String> listData, Side side)
+    {
+        List<ModContainer> rejects = Lists.newArrayList();
+        for (Entry<ModContainer, NetworkModHolder> networkMod : NetworkRegistry.INSTANCE.registry().entrySet())
+        {
+            boolean result = networkMod.getValue().check(listData, side);
+            if (!result)
+            {
+                rejects.add(networkMod.getKey());
+            }
+        }
+        return rejects;
     }
 
     @SideOnly(Side.CLIENT)

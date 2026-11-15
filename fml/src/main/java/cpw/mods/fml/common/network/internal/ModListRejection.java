@@ -1,5 +1,6 @@
 package cpw.mods.fml.common.network.internal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,34 +31,51 @@ public final class ModListRejection
     public static String message(List<ModContainer> rejects, Map<String, String> remoteVersions, Side remoteSide)
     {
         StringBuilder message = new StringBuilder(text("spoon.network.rejected", "Your mods do not match the server's:"));
+        for (String line : lines(rejects, remoteVersions, remoteSide))
+        {
+            message.append('\n').append(line);
+        }
+        return message.toString();
+    }
+
+    /**
+     * Returns a line for each mod, at most {@link #MAX_LISTED} and then how many more, for the server list too.
+     */
+    public static List<String> lines(List<ModContainer> rejects, Map<String, String> remoteVersions, Side remoteSide)
+    {
+        List<String> lines = new ArrayList<String>();
         for (int i = 0; i < rejects.size() && i < MAX_LISTED; i++)
         {
             ModContainer mod = rejects.get(i);
             String name = String.format("%s (%s)", mod.getName(), mod.getModId());
             String here = mod.getDisplayVersion();
             String remote = remoteVersions.get(mod.getModId());
-            message.append('\n');
             if (remoteSide == Side.SERVER)
             {
-                message.append(remote == null
+                lines.add(remote == null
                         ? text("spoon.network.rejected.serverMissing", "%s: you have %s, the server does not", name, here)
                         : text("spoon.network.rejected.serverVersion", "%s: you have %s, the server has %s", name, here, remote));
             }
             else
             {
-                message.append(remote == null
+                lines.add(remote == null
                         ? text("spoon.network.rejected.clientMissing", "%s: the server has %s, you do not", name, here)
                         : text("spoon.network.rejected.clientVersion", "%s: the server has %s, you have %s", name, here, remote));
             }
         }
         if (rejects.size() > MAX_LISTED)
         {
-            message.append('\n').append(text("spoon.network.rejected.more", "and %s more", rejects.size() - MAX_LISTED));
+            lines.add(more(rejects.size() - MAX_LISTED));
         }
-        return message.toString();
+        return lines;
     }
 
-    private static String text(String key, String english, Object... args)
+    static String more(int count)
+    {
+        return text("spoon.network.rejected.more", "and %s more", count);
+    }
+
+    static String text(String key, String english, Object... args)
     {
         try
         {

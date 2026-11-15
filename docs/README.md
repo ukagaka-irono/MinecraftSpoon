@@ -66,7 +66,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 * **Mods that do not match a server:** when the mods of the client and the server do not match, the disconnect
   screen lists each mod with the version on each side, or that one side lacks it, in place of FML's
   `Mod rejections [FMLMod:examplemod{1.2.3}]`. A Spoon client writes it in its own language; a Spoon server writes it
-  in English. A Forge server still sends Forge's text.
+  in English. A Forge server still sends Forge's text. Before joining, the tooltip of the icon on a server in the
+  multiplayer list shows the same list, and the mods only the server has, which it may want on the client too.
 * **Copying chat:** with the chat open, Ctrl+click a line (Cmd+click on macOS) to copy its whole message to the
   clipboard, such as coordinates or an error. A long message drawn on several lines is copied whole.
 * **Signs:** a movable cursor (arrow keys, Home/End, Delete) so text can be inserted mid-line, and a line only accepts

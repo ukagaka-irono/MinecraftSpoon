@@ -771,36 +771,31 @@ public class FMLClientHandler implements IFMLSidedHandler
 
     public String enhanceServerListEntry(ServerListEntryNormal serverListEntry, ServerData serverEntry, int x, int width, int y, int relativeMouseX, int relativeMouseY)
     {
-        String tooltip;
+        ExtendedServerListData extendedData;
         int idx;
         boolean blocked = false;
         if (serverDataTag.containsKey(serverEntry))
         {
-            ExtendedServerListData extendedData = serverDataTag.get(serverEntry);
+            extendedData = serverDataTag.get(serverEntry);
             if ("FML".equals(extendedData.type) && extendedData.isCompatible)
             {
                 idx = 0;
-                tooltip = String.format("Compatible FML modded server\n%d mods present", extendedData.modData.size());
             }
             else if ("FML".equals(extendedData.type) && !extendedData.isCompatible)
             {
                 idx = 16;
-                tooltip = String.format("Incompatible FML modded server\n%d mods present", extendedData.modData.size());
             }
             else if ("BUKKIT".equals(extendedData.type))
             {
                 idx = 32;
-                tooltip = String.format("Bukkit modded server");
             }
             else if ("VANILLA".equals(extendedData.type))
             {
                 idx = 48;
-                tooltip = String.format("Vanilla server");
             }
             else
             {
                 idx = 64;
-                tooltip = String.format("Unknown server data");
             }
             blocked = extendedData.isBlocked;
         }
@@ -815,7 +810,9 @@ public class FMLClientHandler implements IFMLSidedHandler
             Gui.func_146110_a(x + width - 18, y + 10, 0, 80, 16, 16, 256.0f, 256.0f);
         }
 
-        return relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26 ? tooltip : null;
+        // Spoon: translated, and listing the mods that do not match, only written while the mouse is over the icon
+        boolean hovered = relativeMouseX > width - 15 && relativeMouseX < width && relativeMouseY > 10 && relativeMouseY < 26;
+        return hovered ? cpw.mods.fml.common.network.internal.ServerListTooltip.text(extendedData.type, extendedData.isCompatible, extendedData.modData) : null;
     }
 
     public String fixDescription(String description)

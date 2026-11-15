@@ -207,7 +207,7 @@ N を新しい版の番号とする。
 | Realms ボタンの代わりの「Mod」ボタン | `GuiMainMenu.java.patch` |
 | Windows の IME 対応 | `net.minecraftforge.client.ime.IMEHandler`（`ForgeModContainer` で登録する。看板のキャレットの位置は `TileEntitySignRenderer.java.patch` から渡す） |
 | 速い言語の切り替え | `net.minecraftforge.client.LanguageSwitch`、`GuiLanguage.java.patch`（設定は `fastLanguageSwitch`） |
-| サーバーと合わない Mod の一覧 | `cpw.mods.fml.common.network.internal.ModListRejection`（`FMLNetworkHandler.checkModList` から呼ぶ） |
+| サーバーと合わない Mod の一覧 | `cpw.mods.fml.common.network.internal.ModListRejection`（`FMLNetworkHandler.checkModList` から呼ぶ）、サーバー一覧のツールチップは `ServerListTooltip`（`FMLClientHandler.enhanceServerListEntry` から呼ぶ） |
 | チャットのコピー（Ctrl+クリック） | `net.minecraftforge.client.ChatCopy`、`GuiChat.java.patch` |
 | 看板のカーソル | `GuiEditSign.java.patch` |
 | 全角英数字の幅 | `FontRenderer.java.patch` |
