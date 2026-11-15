@@ -14,6 +14,7 @@ fml.menu.mods.links=リンク:
 fml.menu.mods.credits=クレジット:
 fml.menu.mods.children=子 Mod:
 fml.menu.mods.modId=Mod ID: %s
+fml.menu.mods.file=ファイル: %s
 fml.menu.mods.state=状態: %s
 fml.menu.mods.noDescription=説明はありません。
 fml.menu.mods.noMetadata=Mod の情報が見つかりません。Mod の作者に mcmod.info を用意するよう依頼してください。

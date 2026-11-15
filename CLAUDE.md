@@ -211,7 +211,7 @@ N を新しい版の番号とする。
 | チャットのコピー（Ctrl+クリック） | `net.minecraftforge.client.ChatCopy`、`GuiChat.java.patch` |
 | 看板のカーソル | `GuiEditSign.java.patch` |
 | 全角英数字の幅 | `FontRenderer.java.patch` |
-| Mod Menu 風の Mod 一覧（検索、並べ替え、設定ファイルのボタン、更新ありのバッジ、起動時間） | `cpw.mods.fml.client.GuiSpoonModList`、`GuiSlotSpoonModList`、`cpw.mods.fml.common.ModConfigFiles`、`net.minecraftforge.client.gui.ModListHandler` |
+| Mod Menu 風の Mod 一覧（検索、並べ替え、設定ファイルのボタン、更新ありのバッジ、起動時間、Mod のファイルの表示） | `cpw.mods.fml.client.GuiSpoonModList`、`GuiSlotSpoonModList`、`cpw.mods.fml.common.ModConfigFiles`、`net.minecraftforge.client.gui.ModListHandler` |
 | Mod ごとの起動時間 | `cpw.mods.fml.common.ModStartupTimes`（`LoadController` と `Loader` から呼ぶ） |
 | メモリー不足の警告 | `net.minecraftforge.client.MemoryCheck`（`FMLClientHandler.onInitializationComplete` で調べ、`ForgeHooksClient.renderMainMenu` で表示。設定は `memoryWarning`） |
 | 起動完了の通知（タスクバーの点滅） | `net.minecraftforge.client.StartupNotifier`（`FMLClientHandler.onInitializationComplete` から呼ぶ。設定は `startupNotification`） |

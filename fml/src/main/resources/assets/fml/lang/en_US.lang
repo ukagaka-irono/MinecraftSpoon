@@ -96,6 +96,7 @@ fml.menu.mods.links=Links:
 fml.menu.mods.credits=Credits:
 fml.menu.mods.children=Child mods:
 fml.menu.mods.modId=Mod ID: %s
+fml.menu.mods.file=File: %s
 fml.menu.mods.state=State: %s
 fml.menu.mods.noDescription=No description provided.
 fml.menu.mods.noMetadata=No mod information found. Ask the mod author to provide an mcmod.info file.

@@ -80,7 +80,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   it, such as EnderCore, keep working. The **Mod Options...** button of the pause menu opens it too, in place of
   Forge's `GuiIngameModOptions`, which Forge 1.7.10 never finished.
   For a mod without a config screen, the button becomes **Config File** or **Config Folder** and opens the config
-  files the mod loaded through Forge's `Configuration`, in the program the system opens them with.
+  files the mod loaded through Forge's `Configuration`, in the program the system opens them with. The details name the
+  mod's file, as jar names often differ from mod names, and clicking it shows the file in the file manager.
 * **Faster startup and startup times:** mod discovery skips method bodies, and each loading phase logs
   `Spoon startup: ...` timings. Spoon also measures how long each mod spends in its own loading events (construction,
   pre-initialization, initialization, post-initialization and others), and logs the 10 slowest mods when loading ends.

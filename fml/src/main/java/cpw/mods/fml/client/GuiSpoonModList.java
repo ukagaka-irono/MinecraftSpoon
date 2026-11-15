@@ -557,6 +557,15 @@ public class GuiSpoonModList extends GuiScreen implements GuiYesNoCallback
         }
         lines.add(new GuiSlotModInfo.Line("", 0, COLOR_TEXT, null));
         addWrapped(lines, I18n.format("fml.menu.mods.modId", mod.getModId()), 0, wrap, COLOR_SECONDARY, null);
+        File source = mod.getSource();
+        if (source != null && source.exists())
+        {
+            // Jar names often differ from mod names, so this tells which file in the mods folder is this mod
+            for (String line : (List<String>) this.fontRendererObj.listFormattedStringToWidth(I18n.format("fml.menu.mods.file", source.getName()), wrap))
+            {
+                lines.add(new GuiSlotModInfo.Line(line, 0, COLOR_LINK, null, source));
+            }
+        }
         String state = Loader.instance().getModState(mod).name().toLowerCase(Locale.ROOT);
         addWrapped(lines, I18n.format("fml.menu.mods.state", I18n.format("fml.menu.mods.state." + state)), 0, wrap, COLOR_SECONDARY, null);
         if (ModStartupTimes.has(mod))

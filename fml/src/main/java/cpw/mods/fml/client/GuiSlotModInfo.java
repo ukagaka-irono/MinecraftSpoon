@@ -9,6 +9,7 @@
 
 package cpw.mods.fml.client;
 
+import java.io.File;
 import java.util.List;
 
 import net.minecraft.client.renderer.Tessellator;
@@ -30,13 +31,21 @@ public class GuiSlotModInfo extends GuiScrollingList
         final int indent;
         final int color;
         final String link;
+        /** A file to show in the file manager when the line is clicked */
+        final File reveal;
 
         public Line(String text, int indent, int color, String link)
+        {
+            this(text, indent, color, link, null);
+        }
+
+        public Line(String text, int indent, int color, String link, File reveal)
         {
             this.text = text;
             this.indent = indent;
             this.color = color;
             this.link = link;
+            this.reveal = reveal;
         }
     }
 
@@ -76,7 +85,11 @@ public class GuiSlotModInfo extends GuiScrollingList
     protected void elementClicked(int index, boolean doubleClick)
     {
         Line line = this.lines.get(index);
-        if (line.link != null)
+        if (line.reveal != null)
+        {
+            FileOpener.reveal(line.reveal);
+        }
+        else if (line.link != null)
         {
             this.parent.openLink(line.link);
         }
