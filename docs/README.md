@@ -61,6 +61,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
     Japanese, Chinese or Korean IME turned on.
   * Text committed by an IME reaches chat, signs and other text fields.
   * The IME composition and candidate windows open at the caret.
+* **Copying chat:** with the chat open, Ctrl+click a line (Cmd+click on macOS) to copy its whole message to the
+  clipboard, such as coordinates or an error. A long message drawn on several lines is copied whole.
 * **Signs:** a movable cursor (arrow keys, Home/End, Delete) so text can be inserted mid-line, and a line only accepts
   characters that fit on the board.
 * **Full-width letters** such as `ｋ` (U+FF4B) are measured at the width they are drawn at, so centered text containing

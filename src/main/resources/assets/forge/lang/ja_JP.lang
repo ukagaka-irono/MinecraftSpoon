@@ -1,6 +1,7 @@
 spoon.update.newversion=Spoon の新しいバージョンがあります: %s
 spoon.update.beta.1=%s警告: %sSpoon ベータ版
 spoon.update.beta.2=重大な問題が起きる可能性があります。報告の前に確認してください。
+spoon.chat.copied=メッセージをクリップボードにコピーしました
 spoon.memory.low.1=Java のメモリーが Mod の数に対して足りないかもしれません
 spoon.memory.low.2=割り当て: %s。Mod %s 個には %s 以上がおすすめです
 spoon.crash.title=Minecraft がクラッシュしました

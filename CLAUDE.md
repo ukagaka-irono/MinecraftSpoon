@@ -205,6 +205,7 @@ N を新しい版の番号とする。
 | ブランド表示 | `src/main/resources/fmlbranding.properties`、`FMLCommonHandler` |
 | Realms ボタンの代わりの「Mod」ボタン | `GuiMainMenu.java.patch` |
 | Windows の IME 対応 | `net.minecraftforge.client.ime.IMEHandler`（`ForgeModContainer` で登録する。看板のキャレットの位置は `TileEntitySignRenderer.java.patch` から渡す） |
+| チャットのコピー（Ctrl+クリック） | `net.minecraftforge.client.ChatCopy`、`GuiChat.java.patch` |
 | 看板のカーソル | `GuiEditSign.java.patch` |
 | 全角英数字の幅 | `FontRenderer.java.patch` |
 | Mod Menu 風の Mod 一覧（検索、並べ替え、設定ファイルのボタン、更新ありのバッジ、起動時間） | `cpw.mods.fml.client.GuiSpoonModList`、`GuiSlotSpoonModList`、`cpw.mods.fml.common.ModConfigFiles`、`net.minecraftforge.client.gui.ModListHandler` |
@@ -231,7 +232,5 @@ N を新しい版の番号とする。
 
 ユーザーが選んだものだけを作る。
 
-1. **チャットのコピー:** チャットを開いて行を Ctrl+クリックすると、その行をクリップボードにコピーする。
-   - `GuiChat` のパッチが増える。Ctrl+クリックを使うほかの Mod とぶつからないか確かめる。
-2. **日本語の文字をなめらかに表示する（大きな案）:** ユニコードフォントの代わりに Windows のフォントで描く。
+1. **日本語の文字をなめらかに表示する（大きな案）:** ユニコードフォントの代わりに Windows のフォントで描く。
    - 文字の描画は多くの Mod が触るので、ぶつかる危険が大きい。作るなら設定でオンにする機能にし、時間をかけて確かめる。

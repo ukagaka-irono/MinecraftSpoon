@@ -8,6 +8,7 @@ forge.client.shutdown.internal=Shutting down internal server...
 spoon.update.newversion=New Spoon version available: %s
 spoon.update.beta.1=%sWARNING: %sSpoon Beta
 spoon.update.beta.2=Major issues may arise, verify before reporting.
+spoon.chat.copied=Copied the message to the clipboard
 spoon.memory.low.1=Java may not have enough memory for these mods
 spoon.memory.low.2=Allocated: %s. Suggested for %s mods: %s or more
 spoon.crash.title=Minecraft has crashed

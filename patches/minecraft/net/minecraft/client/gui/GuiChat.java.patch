@@ -8,7 +8,16 @@
          this.field_146297_k.field_71439_g.func_71165_d(p_146403_1_);
      }
  
-@@ -330,13 +331,14 @@
+@@ -169,6 +170,8 @@
+ 
+     protected void func_73864_a(int p_73864_1_, int p_73864_2_, int p_73864_3_)
+     {
++        if (p_73864_3_ == 0 && func_146271_m() && net.minecraftforge.client.ChatCopy.copyAt(Mouse.getX(), Mouse.getY())) return;
++
+         if (p_73864_3_ == 0 && this.field_146297_k.field_71474_y.field_74359_p)
+         {
+             IChatComponent ichatcomponent = this.field_146297_k.field_71456_v.func_146158_b().func_146236_a(Mouse.getX(), Mouse.getY());
+@@ -330,13 +333,14 @@
              this.field_146297_k.field_71456_v.func_146158_b().func_146234_a(new ChatComponentText(stringbuilder.toString()), 1);
          }
  
@@ -24,7 +33,7 @@
              this.field_146297_k.field_71439_g.field_71174_a.func_147297_a(new C14PacketTabComplete(p_146405_1_));
              this.field_146414_r = true;
          }
-@@ -458,6 +460,13 @@
+@@ -458,6 +462,13 @@
              String[] astring1 = p_146406_1_;
              int i = p_146406_1_.length;
  
