@@ -146,7 +146,8 @@ public class FMLNetworkHandler
         else
         {
             FMLLog.info("Rejecting connection %s: %s", side, rejects);
-            return String.format("Mod rejections %s",rejects);
+            // Spoon: a message a player can act on, rather than "Mod rejections [FMLMod:examplemod{1.2.3}]"
+            return ModListRejection.message(rejects, listData, side);
         }
     }
 

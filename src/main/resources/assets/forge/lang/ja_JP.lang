@@ -1,6 +1,12 @@
 spoon.update.newversion=Spoon の新しいバージョンがあります: %s
 spoon.update.beta.1=%s警告: %sSpoon ベータ版
 spoon.update.beta.2=重大な問題が起きる可能性があります。報告の前に確認してください。
+spoon.network.rejected=自分とサーバーで Mod が合いません:
+spoon.network.rejected.serverMissing=%s: 自分は %s、サーバーには入っていません
+spoon.network.rejected.serverVersion=%s: 自分は %s、サーバーは %s
+spoon.network.rejected.clientMissing=%s: サーバーは %s、自分には入っていません
+spoon.network.rejected.clientVersion=%s: サーバーは %s、自分は %s
+spoon.network.rejected.more=ほかに %s 個
 spoon.chat.copied=メッセージをクリップボードにコピーしました
 spoon.memory.low.1=Java のメモリーが Mod の数に対して足りないかもしれません
 spoon.memory.low.2=割り当て: %s。Mod %s 個には %s 以上がおすすめです

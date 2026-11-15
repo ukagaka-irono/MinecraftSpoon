@@ -63,6 +63,10 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   * The IME composition and candidate windows open at the caret.
 * **Fast language switch:** changing the language reloads only the language files, in under a second, rather than
   every texture, model and sound, which took 14 seconds with 88 mods and 49 seconds in a 276-mod pack.
+* **Mods that do not match a server:** when the mods of the client and the server do not match, the disconnect
+  screen lists each mod with the version on each side, or that one side lacks it, in place of FML's
+  `Mod rejections [FMLMod:examplemod{1.2.3}]`. A Spoon client writes it in its own language; a Spoon server writes it
+  in English. A Forge server still sends Forge's text.
 * **Copying chat:** with the chat open, Ctrl+click a line (Cmd+click on macOS) to copy its whole message to the
   clipboard, such as coordinates or an error. A long message drawn on several lines is copied whole.
 * **Signs:** a movable cursor (arrow keys, Home/End, Delete) so text can be inserted mid-line, and a line only accepts
