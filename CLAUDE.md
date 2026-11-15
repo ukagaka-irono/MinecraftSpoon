@@ -125,7 +125,7 @@ EOF
   - `ForgeModContainer.syncConfig` に書く。
   - 言語キーは `forge.configgui.<名前>` と `.tooltip`。
   - README の設定の表に、英語と日本語の両方で書く。
-  - 今ある Spoon の設定は `imeControl`、`disableVersionCheck`、`crashWindow` の 3 つ。
+  - 今ある Spoon の設定は `imeControl`、`disableVersionCheck`、`crashWindow`、`startupNotification` の 4 つ。
 - **ファイルやフォルダーを開くとき:** `cpw.mods.fml.client.FileOpener.open(File)` を使う。
 - **ログ:** 先頭に `Spoon …:` を付ける（`Spoon startup:`、`Spoon version check:`、`Spoon crash window:`、`Spoon world backup:` など）。
 - **日本語の言い回し:**
@@ -209,6 +209,7 @@ N を新しい版の番号とする。
 | 全角英数字の幅 | `FontRenderer.java.patch` |
 | Mod Menu 風の Mod 一覧（検索、並べ替え、設定ファイルのボタン、更新ありのバッジ、起動時間） | `cpw.mods.fml.client.GuiSpoonModList`、`GuiSlotSpoonModList`、`cpw.mods.fml.common.ModConfigFiles`、`net.minecraftforge.client.gui.ModListHandler` |
 | Mod ごとの起動時間 | `cpw.mods.fml.common.ModStartupTimes`（`LoadController` と `Loader` から呼ぶ） |
+| 起動完了の通知（タスクバーの点滅） | `net.minecraftforge.client.StartupNotifier`（`FMLClientHandler.onInitializationComplete` から呼ぶ。設定は `startupNotification`） |
 | バージョンチェック | `net.minecraftforge.common.ForgeVersion`（`spoon.update.*` のキー） |
 | クラッシュレポートの原因らしい Mod | `net.minecraftforge.logging.CrashReportAnalyser`、`CrashReport.java.patch` |
 | クラッシュ時の画面 | `net.minecraftforge.client.CrashWindow`（`Minecraft.displayCrashReport` から呼ぶ。設定は `crashWindow`） |
@@ -229,9 +230,7 @@ N を新しい版の番号とする。
 
 ユーザーが選んだものだけを作る。
 
-1. **起動完了の通知:** 起動に数分かかる Modpack（ATM0 など）向け。起動が終わったときにゲームのウィンドウが前面にないなら、
-   タスクバーのアイコンを点滅させる。
-   - Windows の `FlashWindowEx` を JNA で呼ぶ。`IMEHandler` も JNA を使っている。
-   - Windows 以外では何もしない。
-2. **メモリー不足の警告:** Java に割り当てたメモリーが Mod の数に対して少ないとき、タイトル画面とログで知らせる。
+1. **メモリー不足の警告:** Java に割り当てたメモリーが Mod の数に対して少ないとき、タイトル画面とログで知らせる。
    - Prism は初期値が多めなので、Prism の利用者にはあまり効かない。
+2. **日本語の文字をなめらかに表示する（大きな案）:** ユニコードフォントの代わりに Windows のフォントで描く。
+   - 文字の描画は多くの Mod が触るので、ぶつかる危険が大きい。作るなら設定でオンにする機能にし、時間をかけて確かめる。

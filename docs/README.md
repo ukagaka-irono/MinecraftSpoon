@@ -76,7 +76,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   `Spoon startup: ...` timings. Spoon also measures how long each mod spends in its own loading events (construction,
   pre-initialization, initialization, post-initialization and others), and logs the 10 slowest mods when loading ends.
   The mod list shows each mod's time in its details, and its sort button can sort the mods by startup time, slowest
-  first. Time that belongs to no single mod, such as loading textures, is not counted.
+  first. Time that belongs to no single mod, such as loading textures, is not counted. On Windows, when loading is done
+  while another window is in front, the game's taskbar button flashes.
 * **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
   mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
 * **Crash window:** Minecraft 1.7.10 closes its window without a word when it crashes. Spoon opens a window instead,
@@ -106,6 +107,7 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 | IME Control                 | `imeControl` (`general`)           | `true`  | Windows only. Set it to `false` to stop Spoon from detaching the IME. |
 | Disable Spoon Version Check | `disableVersionCheck` (`general`)  | `false` | Set it to `true` to stop Spoon from checking for a new version at startup. |
 | Crash Window                | `crashWindow` (`general`)          | `true`  | Client only. Set it to `false` to exit at once on a crash, without the crash window. |
+| Startup Notification        | `startupNotification` (`general`)  | `true`  | Windows only. Set it to `false` to stop Spoon from flashing the taskbar button when loading is done. |
 
 To change a setting in game, open **Mods** on the title screen, select Spoon and choose
 **Config > General Settings**. A change to IME Control or Crash Window made from the title screen applies at once; the

@@ -249,7 +249,10 @@ public class IMEHandler
         return new int[] { x * scale, top * scale, (top + font.FONT_HEIGHT) * scale };
     }
 
-    private static Pointer findWindow() throws Exception
+    /**
+     * Returns the HWND of the game window. Windows only, once the window is open.
+     */
+    public static Pointer findWindow() throws Exception
     {
         Field implField = Display.class.getDeclaredField("display_impl");
         implField.setAccessible(true);

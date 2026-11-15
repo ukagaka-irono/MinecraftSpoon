@@ -409,6 +409,8 @@ public class FMLClientHandler implements IFMLSidedHandler
             SplashProgress.finish();
         }
         logMissingTextureErrors();
+        // Spoon: tells the player waiting in another window that the game is ready, or shows a loading problem
+        net.minecraftforge.client.StartupNotifier.loadingDone();
     }
     /**
      * Get the server instance

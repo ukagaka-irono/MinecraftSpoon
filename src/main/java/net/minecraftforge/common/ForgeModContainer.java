@@ -70,6 +70,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static boolean disableVersionCheck = false;
     public static boolean imeControl = true;
     public static boolean crashWindow = true;
+    public static boolean startupNotification = true;
     public static int defaultSpawnFuzz = 20;
     public static boolean defaultHasSpawnFuzz = true;
 
@@ -241,6 +242,12 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
                 "Client only. Show a window with the suspected mods and the crash report when the game crashes. The game exits when the window is closed.");
         prop.setLanguageKey("forge.configgui.crashWindow");
         crashWindow = prop.getBoolean(true);
+        propOrder.add(prop.getName());
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "startupNotification", true,
+                "Windows only. Flash the game's taskbar button when loading is done while another window is in front.");
+        prop.setLanguageKey("forge.configgui.startupNotification");
+        startupNotification = prop.getBoolean(true);
         propOrder.add(prop.getName());
 
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
