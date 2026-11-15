@@ -1,7 +1,7 @@
 # Spoon 開発の引き継ぎ
 
 Claude Code はこのファイルを毎回読み込みます。Spoon の開発を続けるための前提、手順、注意点をまとめています。
-最終更新: 2026-11-09（Spoon 1.0.0-beta.5 をリリースしたあと）
+最終更新: 2026-11-15（Spoon 1.0.0-beta.6 をリリースしたあと）
 
 ## ユーザーとの進め方
 
@@ -197,6 +197,7 @@ N を新しい版の番号とする。
     - メッセージは `Spoon を 1.0.0-beta.N にする` と箇条書き。
     - `promotions_slim.json` を公開するのは、必ず GitHub のリリースができたあとにする。古い版のお知らせがリリースページを指すため。
 12. GitHub Pages に反映されるまで、`curl` で JSON とページを確かめる（数分かかる）。
+13. この `CLAUDE.md` の「最終更新」と「今の状態」を新しい版に合わせて直し、ユーザーに言われたらコミットして push する。
 
 ## 機能と置き場所
 
@@ -220,11 +221,12 @@ N を新しい版の番号とする。
 | 止まらないスクリーンショット | `net.minecraftforge.client.ScreenshotSaver`（F2 のときだけ。`ScreenShotHelper` はそのまま） |
 | 日本語化 | 言語ファイル、`FMLScreenText` |
 
-## 今の状態（2026-11-09）
+## 今の状態（2026-11-15）
 
-- 最新のリリースは 1.0.0-beta.5。タグは `c14fbaf4d` で、`spoon` の HEAD と同じなので、未リリースの変更はない。
-- Web サイトは `d516bff`。`promotions_slim.json` の `1.7.10-latest` は `1.0.0-beta.5`。
-- 2 つの Prism インスタンスには、どちらも正式な beta.5 が入っている。
+- 最新のリリースは 1.0.0-beta.6。タグは `368a3ba8c`。それより後の `spoon` のコミットは、この節を直したものだけで、
+  未リリースの機能の変更はない。
+- Web サイトは `c7c801b`。`promotions_slim.json` の `1.7.10-latest` は `1.0.0-beta.6`。
+- 2 つの Prism インスタンスには、どちらも正式な beta.6 が入っている。`1.7.10-spoon` のメモリーは 6044 MB。
 - `.claude/worktrees/practical-herschel-b0371d` は、ほかのセッションが残した古い worktree（beta.1 のころ、detached）。
   検索するとここの古いコピーも見つかるので、除いて読む。
 
