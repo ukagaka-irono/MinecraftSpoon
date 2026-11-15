@@ -412,6 +412,7 @@ public class FMLClientHandler implements IFMLSidedHandler
         // Spoon: checks the memory against the mods loaded, and tells the player waiting in another window that the
         // game is ready, or shows a loading problem
         net.minecraftforge.client.MemoryCheck.loadingDone();
+        net.minecraftforge.client.ChatHistory.loadingDone();
         net.minecraftforge.client.StartupNotifier.loadingDone();
     }
     /**

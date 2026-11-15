@@ -70,6 +70,9 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   multiplayer list shows the same list, and the mods only the server has, which it may want on the client too.
 * **Copying chat:** with the chat open, Ctrl+click a line (Cmd+click on macOS) to copy its whole message to the
   clipboard, such as coordinates or an error. A long message drawn on several lines is copied whole.
+* **Chat history:** the messages and commands sent in the chat, which the up arrow brings back, are kept in
+  `chat_history.txt` in the game folder, the last 100, so they are still there after a restart. Login commands such as
+  `/login` and `/register`, which carry a password, are never kept.
 * **Signs:** a movable cursor (arrow keys, Home/End, Delete) so text can be inserted mid-line, and a line only accepts
   characters that fit on the board.
 * **Full-width letters** such as `ｋ` (U+FF4B) are measured at the width they are drawn at, so centered text containing
@@ -121,6 +124,7 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 | Crash Window                | `crashWindow` (`general`)          | `true`  | Client only. Set it to `false` to exit at once on a crash, without the crash window. |
 | Startup Notification        | `startupNotification` (`general`)  | `true`  | Windows only. Set it to `false` to stop Spoon from flashing the taskbar button when loading is done. |
 | Memory Warning              | `memoryWarning` (`general`)        | `true`  | Client only. Set it to `false` to hide the memory warning from the title screen. |
+| Save Chat History           | `saveChatHistory` (`general`)      | `true`  | Client only. Set it to `false` to stop keeping the chat history in `chat_history.txt`. |
 | Fast Language Switch        | `fastLanguageSwitch` (`general`)   | `true`  | Client only. Set it to `false` to reload every resource when the language changes, as Minecraft does, if a mod shows the old language until a restart. |
 
 To change a setting in game, open **Mods** on the title screen, select Spoon and choose
