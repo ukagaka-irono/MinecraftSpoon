@@ -78,6 +78,8 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
   The mod list shows each mod's time in its details, and its sort button can sort the mods by startup time, slowest
   first. Time that belongs to no single mod, such as loading textures, is not counted. On Windows, when loading is done
   while another window is in front, the game's taskbar button flashes.
+* **Memory warning:** when the memory given to Java (`-Xmx`) is below a guide of 1 GB plus 12 MB per loaded mod, the
+  title screen and the log say so. The official launcher gives 1 or 2 GB, which big modpacks run out of.
 * **Suspected mods in crash reports:** as in newer Forge versions, the `-- Head --` section of a crash report lists the
   mods whose code appears in the stacktrace, including code merged by mixins. See [the support guide][Support].
 * **Crash window:** Minecraft 1.7.10 closes its window without a word when it crashes. Spoon opens a window instead,
@@ -108,6 +110,7 @@ Spoon requires the version of Java that Minecraft 1.7.10 requires:
 | Disable Spoon Version Check | `disableVersionCheck` (`general`)  | `false` | Set it to `true` to stop Spoon from checking for a new version at startup. |
 | Crash Window                | `crashWindow` (`general`)          | `true`  | Client only. Set it to `false` to exit at once on a crash, without the crash window. |
 | Startup Notification        | `startupNotification` (`general`)  | `true`  | Windows only. Set it to `false` to stop Spoon from flashing the taskbar button when loading is done. |
+| Memory Warning              | `memoryWarning` (`general`)        | `true`  | Client only. Set it to `false` to hide the memory warning from the title screen. |
 
 To change a setting in game, open **Mods** on the title screen, select Spoon and choose
 **Config > General Settings**. A change to IME Control or Crash Window made from the title screen applies at once; the

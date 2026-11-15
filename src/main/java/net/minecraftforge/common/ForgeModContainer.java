@@ -71,6 +71,7 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
     public static boolean imeControl = true;
     public static boolean crashWindow = true;
     public static boolean startupNotification = true;
+    public static boolean memoryWarning = true;
     public static int defaultSpawnFuzz = 20;
     public static boolean defaultHasSpawnFuzz = true;
 
@@ -248,6 +249,12 @@ public class ForgeModContainer extends DummyModContainer implements WorldAccessC
                 "Windows only. Flash the game's taskbar button when loading is done while another window is in front.");
         prop.setLanguageKey("forge.configgui.startupNotification");
         startupNotification = prop.getBoolean(true);
+        propOrder.add(prop.getName());
+
+        prop = config.get(Configuration.CATEGORY_GENERAL, "memoryWarning", true,
+                "Client only. Warn on the title screen when the memory given to Java looks too small for the mods loaded.");
+        prop.setLanguageKey("forge.configgui.memoryWarning");
+        memoryWarning = prop.getBoolean(true);
         propOrder.add(prop.getName());
 
         config.setCategoryPropertyOrder(CATEGORY_GENERAL, propOrder);
